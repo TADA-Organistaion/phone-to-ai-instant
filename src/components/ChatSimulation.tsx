@@ -41,6 +41,147 @@ type MenuItem = {
   };
 };
 
+const menuTemplates = {
+  pizzaParlor: [
+    {
+      name: "Margherita Pizza",
+      price: 10,
+      description: "Tomatoes, basil, mozzarella.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: true,
+        dairyFree: false,
+      },
+    },
+    {
+      name: "Pepperoni Pizza",
+      price: 11,
+      description: "Pepperoni and extra cheese.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: false,
+        dairyFree: false,
+      },
+    },
+    {
+      name: "Garlic Knots",
+      price: 5,
+      description: "Freshly baked with garlic butter.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: false,
+        dairyFree: false,
+      },
+    },
+    {
+      name: "Caesar Salad",
+      price: 7,
+      description: "Romaine lettuce, croutons, parmesan.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: false,
+        dairyFree: true,
+      },
+    },
+  ],
+  burgerShack: [
+    {
+      name: "Classic Burger",
+      price: 6,
+      description: "100% beef patty.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: true,
+        dairyFree: true,
+      },
+    },
+    {
+      name: "Cheeseburger",
+      price: 7,
+      description: "American cheese, lettuce, tomato.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: true,
+        dairyFree: false,
+      },
+    },
+    {
+      name: "Fries",
+      price: 3,
+      description: "Crispy golden fries.",
+      dietaryInfo: {
+        vegan: true,
+        glutenFree: true,
+        eggFree: true,
+        dairyFree: true,
+      },
+    },
+    {
+      name: "Onion Rings",
+      price: 4,
+      description: "Battered onion rings.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: false,
+        dairyFree: true,
+      },
+    },
+  ],
+  cafePastries: [
+    {
+      name: "Espresso",
+      price: 4,
+      description: "Rich, concentrated coffee.",
+      dietaryInfo: {
+        vegan: true,
+        glutenFree: true,
+        eggFree: true,
+        dairyFree: true,
+      },
+    },
+    {
+      name: "Latte",
+      price: 5,
+      description: "Steamed milk, optional flavor shots.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: true,
+        eggFree: true,
+        dairyFree: false,
+      },
+    },
+    {
+      name: "Croissant",
+      price: 3,
+      description: "Buttery French pastry.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: false,
+        dairyFree: false,
+      },
+    },
+    {
+      name: "Blueberry Muffin",
+      price: 2.5,
+      description: "Made with real blueberries.",
+      dietaryInfo: {
+        vegan: false,
+        glutenFree: false,
+        eggFree: false,
+        dairyFree: false,
+      },
+    },
+  ],
+};
+
 const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -218,6 +359,10 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
         currentDelay += delay;
       }
     }, 1500);
+  };
+
+  const handleMenuTemplateClick = (template: "pizzaParlor" | "burgerShack" | "cafePastries") => {
+    setMenuItems(menuTemplates[template]);
   };
 
   useEffect(() => {
@@ -478,6 +623,57 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
               </Button>
             </div>
             
+            <div className="border-t pt-4 mt-4">
+              <div className="text-center mb-4">
+                <h3 className="text-sm font-medium">One-Tap Prompt Templates</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Quickly try a demo with pre-populated menu items
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="text-xs h-auto py-3 flex flex-col items-center"
+                  onClick={() => handleMenuTemplateClick("pizzaParlor")}
+                >
+                  <span className="text-base mb-1">🍕</span>
+                  Pizza Parlor
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="text-xs h-auto py-3 flex flex-col items-center"
+                  onClick={() => handleMenuTemplateClick("burgerShack")}
+                >
+                  <span className="text-base mb-1">🍔</span>
+                  Burger Shack
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="text-xs h-auto py-3 flex flex-col items-center"
+                  onClick={() => handleMenuTemplateClick("cafePastries")}
+                >
+                  <span className="text-base mb-1">☕</span>
+                  Cafe & Pastries
+                </Button>
+              </div>
+              
+              <div className="text-center mt-3">
+                <Button 
+                  className="bg-brand hover:bg-brand-dark text-white text-sm mt-2 w-full"
+                  onClick={handleMenuSubmit}
+                  disabled={menuItems.length === 0}
+                >
+                  I'm Done—Show My Demo
+                </Button>
+              </div>
+            </div>
+            
             {menuItems.length > 0 && (
               <div className="mt-4 rounded-lg border p-3 max-h-48 overflow-y-auto">
                 <h4 className="font-medium text-sm mb-2">Your Menu Items:</h4>
@@ -509,7 +705,3 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
 };
 
 export default ChatSimulation;
-
-
-
-

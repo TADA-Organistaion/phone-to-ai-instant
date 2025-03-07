@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import ChatBubble from "./ChatBubble";
@@ -8,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RotateCcw } from "lucide-react";
 
 type Conversation = {
   message: string;
@@ -46,8 +46,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [conversation, setConversation] = useState<Conversation>([]);
   const [showPlaceholder, setShowPlaceholder] = useState(true);
-  const [activeTab, setActiveTab] = useState<"chat" | "description" | "menu">("chat");
-  const [businessDescription, setBusinessDescription] = useState("");
+  const [activeTab, setActiveTab] = useState<"chat" | "menu">("chat");
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [currentItem, setCurrentItem] = useState<MenuItem>({
     name: "",
@@ -69,6 +68,21 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     { message: "Payment confirmed. Thank you! Your order #137 will be ready in 10 minutes. You'll receive a text notification when it's ready for pickup.", isAi: true },
   ];
 
+  const helperPromptConversation: Conversation = [
+    { message: "I run a small coffee shop that gets constant calls about hours, location, and whether we offer free Wi-Fi. Show me how SmartChat can handle these questions automatically!", isAi: false },
+    { message: "I'd be happy to help with your coffee shop inquiries. I'm loading your knowledge base now with information about hours, location, Wi-Fi policy, and pet policy...", isAi: true },
+    { message: "Hey, what time do you open on weekdays?", isAi: false },
+    { message: "We open at 7:00 AM on weekdays and close at 7:00 PM. On weekends, our hours are 8:00 AM to 5:00 PM.", isAi: true },
+    { message: "Great, where are you located?", isAi: false },
+    { message: "We're at 123 Main Street, near the public library. There's free parking across the street!", isAi: true },
+    { message: "Do you have free Wi-Fi?", isAi: false },
+    { message: "Yes, we offer free Wi-Fi—ask for the password at the counter. Anything else I can help with?", isAi: true },
+    { message: "Are you dog-friendly?", isAi: false },
+    { message: "We do allow dogs on our outdoor patio, but not indoors, unless they're service animals.", isAi: true },
+    { message: "Thanks, that's everything!", isAi: false },
+    { message: "Happy to help! Have a great day.", isAi: true },
+  ];
+
   const customMenuConversation = (menu: ChatSimulationProps["customMenu"]): Conversation => {
     if (!menu || menu.length === 0) return defaultConversation;
     
@@ -82,6 +96,39 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
       { message: "Yes, please!", isAi: false },
       { message: `Payment confirmed. Thank you! Your order #138 will be ready in 10 minutes. You'll receive a text notification when it's ready for pickup.`, isAi: true },
     ];
+  };
+
+  const handleReset = () => {
+    setConversation([]);
+    setInputValue("");
+    setShowPlaceholder(true);
+    setIsLoading(false);
+  };
+  
+  const handleHelperPrompt = () => {
+    setShowPlaceholder(false);
+    setIsLoading(true);
+    
+    // Set first message
+    setConversation([helperPromptConversation[0]]);
+    
+    // Simulate AI thinking
+    setTimeout(() => {
+      setIsLoading(false);
+      
+      // Add rest of conversation with delays
+      let currentDelay = 800;
+      for (let i = 1; i < helperPromptConversation.length; i++) {
+        const message = helperPromptConversation[i];
+        const delay = message.isAi ? 1500 : 800;
+        
+        setTimeout(() => {
+          setConversation(prev => [...prev, message]);
+        }, currentDelay);
+        
+        currentDelay += delay;
+      }
+    }, 1500);
   };
 
   const handleSubmit = (e?: React.FormEvent) => {
@@ -140,45 +187,6 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     });
   };
 
-  const generateDescriptionDemo = () => {
-    if (businessDescription.trim() === "") return;
-    handleDescriptionSubmit();
-  };
-
-  const generateMenuDemo = () => {
-    if (menuItems.length === 0) return;
-    handleMenuSubmit();
-  };
-
-  const handleDescriptionSubmit = () => {
-    setActiveTab("chat");
-    setShowPlaceholder(false);
-    setIsLoading(true);
-    
-    setConversation([{ message: businessDescription, isAi: false }]);
-    
-    // Simulate AI thinking
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Set first user message
-      setConversation([{ message: businessDescription, isAi: false }]);
-      
-      // Add AI responses with delays for natural feel
-      let currentDelay = 800;
-      for (let i = 1; i < defaultConversation.length; i++) {
-        const message = defaultConversation[i];
-        const delay = message.isAi ? 1500 : 800;
-        
-        setTimeout(() => {
-          setConversation(prev => [...prev, message]);
-        }, currentDelay);
-        
-        currentDelay += delay;
-      }
-    }, 1500);
-  };
-
   const handleMenuSubmit = () => {
     setActiveTab("chat");
     setShowPlaceholder(false);
@@ -227,25 +235,35 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   return (
     <div className="w-full max-w-lg mx-auto rounded-xl overflow-hidden glass-morphism shadow-lg">
       <div className="bg-background p-3 border-b">
-        <div className="flex items-center space-x-2">
-          <div className="h-3 w-3 rounded-full bg-red-500"></div>
-          <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-          <div className="h-3 w-3 rounded-full bg-green-500"></div>
-          <div className="text-xs text-center font-medium ml-2 text-muted-foreground">
-            AI Chat Assistant
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="h-3 w-3 rounded-full bg-red-500"></div>
+            <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+            <div className="h-3 w-3 rounded-full bg-green-500"></div>
+            <div className="text-xs text-center font-medium ml-2 text-muted-foreground">
+              AI Chat Assistant
+            </div>
           </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleReset}
+            className="text-xs flex items-center gap-1 text-muted-foreground hover:text-foreground"
+          >
+            <RotateCcw className="h-3 w-3" />
+            Reset
+          </Button>
         </div>
       </div>
       
       <Tabs 
         value={activeTab} 
-        onValueChange={(value) => setActiveTab(value as "chat" | "description" | "menu")}
+        onValueChange={(value) => setActiveTab(value as "chat" | "menu")}
         className="w-full"
       >
         <div className="bg-secondary/20 p-2">
-          <TabsList className="grid grid-cols-3 w-full">
+          <TabsList className="grid grid-cols-2 w-full">
             <TabsTrigger value="chat">Chat</TabsTrigger>
-            <TabsTrigger value="description">Describe</TabsTrigger>
             <TabsTrigger value="menu">Menu</TabsTrigger>
           </TabsList>
         </div>
@@ -259,9 +277,17 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
             )}
           >
             {conversation.length === 0 && showPlaceholder ? (
-              <div className="text-center max-w-md animate-fade-in">
-                <div className="text-muted-foreground text-sm mb-2">Type a message to start the demo</div>
+              <div className="text-center max-w-md animate-fade-in space-y-4">
+                <div className="text-muted-foreground text-sm mb-2">Type a message to start the demo or use a helper prompt</div>
                 <div className="text-xs text-muted-foreground/70">Example: "I run a small burger shack..."</div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleHelperPrompt}
+                  className="mt-4"
+                >
+                  Helper Prompt
+                </Button>
               </div>
             ) : (
               <>
@@ -309,28 +335,6 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
               </button>
             </form>
           </div>
-        </TabsContent>
-        
-        <TabsContent value="description" className="p-4 space-y-4">
-          <div>
-            <Label htmlFor="business-desc" className="text-sm font-medium mb-2 block">
-              Describe your business in one sentence
-            </Label>
-            <Textarea
-              id="business-desc"
-              placeholder="I run a small burger shack with 5 burgers, 2 sides, and a milkshake menu. Show me AI ordering!"
-              className="resize-none"
-              value={businessDescription}
-              onChange={(e) => setBusinessDescription(e.target.value)}
-            />
-          </div>
-          <Button 
-            className="bg-brand hover:bg-brand-dark text-white w-full"
-            onClick={generateDescriptionDemo}
-            disabled={!businessDescription.trim()}
-          >
-            Generate Demo
-          </Button>
         </TabsContent>
         
         <TabsContent value="menu" className="p-4 space-y-4">
@@ -460,7 +464,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
               
               <Button 
                 className="bg-brand hover:bg-brand-dark text-white"
-                onClick={generateMenuDemo}
+                onClick={handleMenuSubmit}
                 disabled={menuItems.length === 0}
               >
                 Generate Demo

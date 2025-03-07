@@ -2,7 +2,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import TestimonialSection from "@/components/TestimonialSection";
-import InputMethods from "@/components/InputMethods";
 import CallToAction from "@/components/CallToAction";
 
 const Index = () => {
@@ -13,7 +12,6 @@ const Index = () => {
       <main className="flex-1">
         <Hero />
         <TestimonialSection />
-        <InputMethods />
         <CallToAction />
       </main>
       

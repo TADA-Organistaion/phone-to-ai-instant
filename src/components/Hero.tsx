@@ -6,7 +6,7 @@ const Hero = () => {
     <section className="relative pt-32 pb-20 px-6 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 to-transparent z-0"></div>
       
-      <div className="max-w-5xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center animate-fade-in">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
             Phone to AI <span className="text-brand">in seconds</span>

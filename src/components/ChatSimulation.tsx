@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, ArrowUp } from "lucide-react";
 
 type Conversation = {
   message: string;
@@ -233,7 +233,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   }, [conversation, activeTab]);
 
   return (
-    <div className="w-full max-w-lg mx-auto rounded-xl overflow-hidden glass-morphism shadow-lg">
+    <div className="w-full max-w-xl mx-auto rounded-xl overflow-hidden glass-morphism shadow-lg">
       <div className="bg-background p-3 border-b">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -272,7 +272,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
           <div 
             ref={chatRef}
             className={cn(
-              "flex flex-col p-4 h-[320px] md:h-[380px] overflow-y-auto",
+              "flex flex-col p-4 h-[420px] md:h-[480px] overflow-y-auto",
               conversation.length === 0 && "justify-center items-center"
             )}
           >
@@ -326,18 +326,25 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
               <button
                 type="submit"
                 className={cn(
-                  "bg-brand text-white py-2 px-4 rounded-r-lg font-medium text-sm",
+                  "bg-brand text-white py-2 px-4 rounded-r-lg font-medium text-sm flex items-center justify-center",
                   isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-brand-dark transition-colors"
                 )}
                 disabled={isLoading}
               >
-                {isLoading ? "Thinking..." : "Send"}
+                {isLoading ? "Thinking..." : <ArrowUp className="h-4 w-4" />}
               </button>
             </form>
           </div>
         </TabsContent>
         
         <TabsContent value="menu" className="p-4 space-y-4">
+          <div className="text-center mb-4">
+            <h3 className="text-sm font-medium">Show Us Your Top Dishes</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Add up to 10 of your menu items to preview our AI ordering flow. Want the full experience? Sign up for free in seconds.
+            </p>
+          </div>
+          
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -502,3 +509,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
 };
 
 export default ChatSimulation;
+
+
+
+

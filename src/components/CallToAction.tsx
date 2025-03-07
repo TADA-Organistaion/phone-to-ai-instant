@@ -6,7 +6,7 @@ const CallToAction = () => {
     <section id="cta" className="py-20 px-6 bg-brand text-white">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-          Ready to replace phone chaos for real?
+          Ready to replace phone chaos for AI automation?
         </h2>
         
         <p className="text-white/80 max-w-2xl mx-auto mb-10 text-lg">

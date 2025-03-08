@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -44,6 +46,12 @@ const Header = () => {
           >
             Demo
           </a>
+          <Link 
+            to="/auth" 
+            className="text-sm text-foreground/80 hover:text-brand transition-colors flex items-center"
+          >
+            Business Sign In <ArrowRight className="ml-1 h-4 w-4" />
+          </Link>
           <a 
             href="#cta" 
             className="px-5 py-2 bg-brand text-white rounded-full text-sm font-medium transition-all hover:bg-brand-dark hover-scale"

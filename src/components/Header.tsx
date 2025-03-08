@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -29,11 +30,11 @@ const Header = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="font-semibold text-lg sm:text-xl">
           <a href="#" className="text-foreground hover:text-brand transition-colors">
-            Phone to AI
+            SmartChat AI
           </a>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-4">
           <a 
             href="#how-it-works" 
             className="text-sm text-foreground/80 hover:text-brand transition-colors"
@@ -46,17 +47,15 @@ const Header = () => {
           >
             Demo
           </a>
-          <Link 
-            to="/auth" 
-            className="text-sm text-foreground/80 hover:text-brand transition-colors flex items-center"
-          >
-            Business Sign In <ArrowRight className="ml-1 h-4 w-4" />
+          <Link to="/auth">
+            <Button variant="outline" size="sm" className="hover:text-brand transition-colors">
+              Sign in
+            </Button>
           </Link>
-          <a 
-            href="#cta" 
-            className="px-5 py-2 bg-brand text-white rounded-full text-sm font-medium transition-all hover:bg-brand-dark hover-scale"
-          >
-            Get Started
+          <a href="#cta">
+            <Button size="sm" className="bg-brand text-white hover:bg-brand-dark hover-scale">
+              Sign up
+            </Button>
           </a>
         </nav>
 

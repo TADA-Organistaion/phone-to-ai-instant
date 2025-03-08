@@ -1,7 +1,8 @@
-
 import { useState } from "react";
 import BusinessDashboardLayout from "@/components/business/BusinessDashboardLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
 
 type DateRange = "today" | "yesterday" | "week" | "month" | "sixMonths" | "year";
@@ -91,6 +92,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
 const AnalyticsPage = () => {
   const [currentRange, setCurrentRange] = useState<DateRange>("week");
+  const [showAllCategories, setShowAllCategories] = useState(false);
   
   const data = dataByRange[currentRange];
   
@@ -99,10 +101,30 @@ const AnalyticsPage = () => {
     { name: 'Human Only', value: data.humanOnly },
   ];
 
+  // Additional analytics data
+  const additionalAnalytics = {
+    today: { purchases: 12, avgValue: 45.50, orders: 10 },
+    yesterday: { purchases: 18, avgValue: 52.75, orders: 15 },
+    week: { purchases: 85, avgValue: 48.30, orders: 73 },
+    month: { purchases: 320, avgValue: 51.20, orders: 278 },
+    sixMonths: { purchases: 1850, avgValue: 53.40, orders: 1620 },
+    year: { purchases: 3720, avgValue: 55.80, orders: 3250 },
+  };
+
   return (
     <BusinessDashboardLayout>
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Analytics</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Analytics</h1>
+          <Button 
+            variant="outline" 
+            onClick={() => setShowAllCategories(!showAllCategories)}
+            className="flex items-center gap-1"
+          >
+            {showAllCategories ? "Hide Categories" : "See All Categories"}
+            {showAllCategories ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          </Button>
+        </div>
         
         <Tabs 
           defaultValue="week" 
@@ -142,6 +164,26 @@ const AnalyticsPage = () => {
                 <p className="text-2xl font-bold">{data.aiResponses}</p>
               </div>
             </div>
+            
+            {/* Additional categories - shown when "See All Categories" is clicked */}
+            {showAllCategories && (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="bg-secondary/30 p-4 rounded-lg">
+                  <p className="text-sm text-muted-foreground">Total Purchases</p>
+                  <p className="text-2xl font-bold">{additionalAnalytics[currentRange].purchases}</p>
+                </div>
+                
+                <div className="bg-secondary/30 p-4 rounded-lg">
+                  <p className="text-sm text-muted-foreground">Average Purchase Value</p>
+                  <p className="text-2xl font-bold">${additionalAnalytics[currentRange].avgValue.toFixed(2)}</p>
+                </div>
+                
+                <div className="bg-secondary/30 p-4 rounded-lg">
+                  <p className="text-sm text-muted-foreground">Total Orders</p>
+                  <p className="text-2xl font-bold">{additionalAnalytics[currentRange].orders}</p>
+                </div>
+              </div>
+            )}
             
             {/* Bar chart */}
             <div className="bg-secondary/10 p-4 rounded-lg">

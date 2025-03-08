@@ -25,6 +25,16 @@ const AuthPage = () => {
       subtitle={isSignUp ? "Get started with Phone to AI" : "Welcome back to Phone to AI"}
     >
       {isSignUp ? <SignUpForm /> : <SignInForm />}
+      
+      <div className="flex justify-center mt-6">
+        <Button
+          variant="outline"
+          onClick={toggleForm}
+          className="w-full max-w-xs"
+        >
+          {isSignUp ? "Switch to Sign In" : "Switch to Sign Up"}
+        </Button>
+      </div>
     </AuthLayout>
   );
 };

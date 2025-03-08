@@ -19,6 +19,9 @@ const SignUpForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Test OTP value - for demo purposes only
+  const TEST_OTP = "1111";
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -66,11 +69,11 @@ const SignUpForm = () => {
       setOtpSent(true);
       
       // For demo purposes only
-      console.log("Demo OTP: 123456");
+      console.log(`Demo OTP: ${TEST_OTP}`);
       
       toast({
         title: "OTP Sent",
-        description: "Check your email for the one-time password.",
+        description: "Check your email for the one-time password. For testing, use: 1111",
       });
     }, 1500);
   };
@@ -92,7 +95,7 @@ const SignUpForm = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       
-      if (otp === "123456") { // Demo validation only
+      if (otp === TEST_OTP) { // Test validation
         toast({
           title: "Account created successfully",
           description: "Welcome to Phone to AI!",
@@ -179,7 +182,7 @@ const SignUpForm = () => {
             <Input
               id="otp"
               type="text"
-              placeholder="Enter your OTP"
+              placeholder="Enter your OTP (hint: 1111)"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               required

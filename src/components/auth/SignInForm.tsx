@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/hooks/use-toast";
 import { useToast } from "@/hooks/use-toast";
 
 const SignInForm = () => {
@@ -14,6 +13,9 @@ const SignInForm = () => {
   const [otp, setOtp] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Test OTP value - for demo purposes only
+  const TEST_OTP = "1111";
 
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,12 +35,12 @@ const SignInForm = () => {
       setIsSubmitting(false);
       setOtpSent(true);
       
-      // For demo purposes only - this would come from server
-      console.log("Demo OTP: 123456");
+      // For demo purposes only - show test OTP
+      console.log(`Demo OTP: ${TEST_OTP}`);
       
       toast({
         title: "OTP Sent",
-        description: "Check your email for the one-time password.",
+        description: "Check your email for the one-time password. For testing, use: 1111",
       });
     }, 1500);
   };
@@ -60,7 +62,7 @@ const SignInForm = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       
-      if (otp === "123456") { // Demo validation only
+      if (otp === TEST_OTP) { // Test validation
         toast({
           title: "Authentication successful",
           description: "Welcome back to Phone to AI!",
@@ -119,7 +121,7 @@ const SignInForm = () => {
             <Input
               id="otp"
               type="text"
-              placeholder="Enter your OTP"
+              placeholder="Enter your OTP (hint: 1111)"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               required

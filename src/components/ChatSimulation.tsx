@@ -2,12 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import ChatBubble from "./ChatBubble";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RotateCcw, ArrowUp, Send, PanelLeftClose, PanelLeftOpen, PlusCircle } from "lucide-react";
+import { RotateCcw, Send, PanelLeftClose, PanelLeftOpen, PlusCircle } from "lucide-react";
 
 type Conversation = {
   message: string;
@@ -288,6 +287,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [selectedPrompt, setSelectedPrompt] = useState<typeof suggestedPrompts[0] | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const defaultConversation: Conversation = [
     { message: "I want 2 cheeseburgers and fries.", isAi: false },
@@ -333,32 +333,6 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     setIsLoading(false);
     setSelectedPrompt(null);
   };
-  
-  const handleHelperPrompt = () => {
-    setShowPlaceholder(false);
-    setIsLoading(true);
-    
-    // Set first message
-    setConversation([helperPromptConversation[0]]);
-    
-    // Simulate AI thinking
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Add rest of conversation with delays
-      let currentDelay = 800;
-      for (let i = 1; i < helperPromptConversation.length; i++) {
-        const message = helperPromptConversation[i];
-        const delay = message.isAi ? 1500 : 800;
-        
-        setTimeout(() => {
-          setConversation(prev => [...prev, message]);
-        }, currentDelay);
-        
-        currentDelay += delay;
-      }
-    }, 1500);
-  };
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -370,16 +344,13 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     
     let userInput = inputValue.trim() || initialPrompt || "I run a small burger shack";
     
-    // If we have a selected prompt, use the demo conversation
     if (selectedPrompt) {
       setConversation([{ message: userInput, isAi: false, role: "user" }]);
       setInputValue("");
 
-      // Simulate AI thinking
       setTimeout(() => {
         setIsLoading(false);
         
-        // Add AI responses with delays for natural feel
         setConversation([{ message: userInput, isAi: false, role: "user" }]);
         
         let currentDelay = 800;
@@ -388,7 +359,6 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
           const delay = message.isAi ? 1500 : 800;
           
           setTimeout(() => {
-            // Ensure we're using the correct type for message.role
             if (message.role && ["system", "user", "assistant", "customer", "demo"].includes(message.role)) {
               setConversation(prev => [...prev, message as {
                 message: string;
@@ -396,7 +366,6 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                 role?: "system" | "user" | "assistant" | "customer" | "demo";
               }]);
             } else {
-              // If role isn't one of the allowed values, omit it
               setConversation(prev => [...prev, {
                 message: message.message,
                 isAi: message.isAi
@@ -411,30 +380,36 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
       return;
     }
     
-    // Default conversation flow
     setConversation([{ message: userInput, isAi: false }]);
     setInputValue("");
 
-    // Simulate AI thinking
     setTimeout(() => {
       setIsLoading(false);
       
-      // Determine which conversation to use
       const newConversation = customMenu 
         ? customMenuConversation(customMenu)
         : defaultConversation;
 
-      // Set first user message
       setConversation([{ message: userInput, isAi: false }]);
       
-      // Add AI responses with delays for natural feel
       let currentDelay = 800;
       for (let i = 1; i < newConversation.length; i++) {
         const message = newConversation[i];
         const delay = message.isAi ? 1500 : 800;
         
         setTimeout(() => {
-          setConversation(prev => [...prev, message]);
+          if (message.role && ["system", "user", "assistant", "customer", "demo"].includes(message.role)) {
+            setConversation(prev => [...prev, message as {
+              message: string;
+              isAi: boolean;
+              role?: "system" | "user" | "assistant" | "customer" | "demo";
+            }]);
+          } else {
+            setConversation(prev => [...prev, {
+              message: message.message,
+              isAi: message.isAi
+            }]);
+          }
         }, currentDelay);
         
         currentDelay += delay;
@@ -472,17 +447,13 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     const menuIntro = `I'd like to order from our menu with ${menuItems.length} items`;
     setConversation([{ message: menuIntro, isAi: false }]);
     
-    // Simulate AI thinking
     setTimeout(() => {
       setIsLoading(false);
       
-      // Determine which conversation to use
       const newConversation = customMenuConversation(menuItems);
 
-      // Set first user message
       setConversation([{ message: menuIntro, isAi: false }]);
       
-      // Add AI responses with delays for natural feel
       let currentDelay = 800;
       for (let i = 1; i < newConversation.length; i++) {
         const message = newConversation[i];
@@ -512,6 +483,18 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [conversation, activeTab]);
+
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`;
+    }
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [inputValue]);
 
   const renderMessage = (message: Conversation[0], index: number, delay: number) => {
     if (message.role === "system") {
@@ -631,16 +614,10 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                 
                 {conversation.length === 0 && showPlaceholder ? (
                   <div className="text-center max-w-md animate-fade-in space-y-4">
-                    <div className="text-muted-foreground text-sm mb-2">Type a message to start the demo or use a helper prompt</div>
+                    <div className="text-muted-foreground text-sm mb-2">
+                      Enter a message about your business—or use a Suggested Prompt.
+                    </div>
                     <div className="text-xs text-muted-foreground/70">Example: "I run a small burger shack..."</div>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={handleHelperPrompt}
-                      className="mt-4"
-                    >
-                      Helper Prompt
-                    </Button>
                   </div>
                 ) : (
                   <>
@@ -675,38 +652,53 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                   </div>
                 )}
                 
-                <form onSubmit={handleSubmit} className="flex items-center">
-                  <Input
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder={selectedPrompt 
-                      ? "Describe your specific details here..."
-                      : "Type a message or select a prompt from the sidebar"
-                    }
-                    className="flex-1 py-2 px-3 rounded-l-lg border-r-0 focus:ring-0"
-                    disabled={isLoading}
-                  />
-                  <Button
-                    type="submit"
-                    className={cn(
-                      "bg-brand text-white py-2 px-4 h-10 rounded-r-lg font-medium text-sm",
-                      isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-brand-dark transition-colors"
-                    )}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span className="flex items-center">
-                        <span className="mr-2">Thinking</span>
-                        <span className="flex gap-1">
-                          <span className="h-1 w-1 bg-white rounded-full animate-bounce"></span>
-                          <span className="h-1 w-1 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></span>
-                          <span className="h-1 w-1 bg-white rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></span>
+                <form onSubmit={handleSubmit} className="flex flex-col">
+                  <div className="relative">
+                    <Textarea
+                      ref={textareaRef}
+                      value={inputValue}
+                      onChange={(e) => {
+                        setInputValue(e.target.value);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleSubmit();
+                        }
+                      }}
+                      placeholder={selectedPrompt 
+                        ? "Describe your specific details here..."
+                        : "Enter a message about your business—or use a Suggested Prompt"
+                      }
+                      className="flex-1 py-3 px-4 rounded-lg min-h-[100px] max-h-[200px] overflow-y-auto resize-none pr-14"
+                      disabled={isLoading}
+                    />
+                    <Button
+                      type="submit"
+                      className={cn(
+                        "absolute bottom-3 right-3 p-2 rounded-full",
+                        isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-brand-dark transition-colors"
+                      )}
+                      disabled={isLoading}
+                      size="icon"
+                    >
+                      {isLoading ? (
+                        <span className="flex items-center justify-center w-5 h-5">
+                          <span className="flex gap-1">
+                            <span className="h-1 w-1 bg-current rounded-full animate-bounce"></span>
+                            <span className="h-1 w-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></span>
+                            <span className="h-1 w-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></span>
+                          </span>
                         </span>
-                      </span>
-                    ) : (
-                      <Send className="h-4 w-4" />
-                    )}
-                  </Button>
+                      ) : (
+                        <Send className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                  
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Press Shift + Enter for a new line. Press Enter to send.
+                  </p>
                 </form>
               </div>
             </div>
@@ -936,4 +928,3 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
 };
 
 export default ChatSimulation;
-

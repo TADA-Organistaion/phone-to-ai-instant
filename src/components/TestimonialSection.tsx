@@ -1,9 +1,6 @@
-
 import { cn } from "@/lib/utils";
-
 const TestimonialSection = () => {
-  return (
-    <section id="how-it-works" className="py-20 px-6">
+  return <section id="how-it-works" className="py-20 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -43,10 +40,7 @@ const TestimonialSection = () => {
           </div>
         </div>
         
-        <div className={cn(
-          "bg-background rounded-xl p-8 shadow-sm glass-morphism mb-16",
-          "border-l-4 border-l-brand"
-        )}>
+        <div className={cn("bg-background rounded-xl p-8 shadow-sm glass-morphism mb-16", "border-l-4 border-l-brand")}>
           <div className="flex flex-col md:flex-row md:items-center">
             <div className="flex-1 mb-6 md:mb-0">
               <h3 className="text-xl font-semibold mb-2">Tiny Café Success Story</h3>
@@ -89,7 +83,7 @@ const TestimonialSection = () => {
           
           <div className="flex flex-col items-center text-center p-6">
             <div className="h-12 w-12 rounded-full bg-brand/10 flex items-center justify-center mb-4">
-              <span className="text-brand font-bold">5min</span>
+              <span className="text-brand font-bold">5 min</span>
             </div>
             <h3 className="text-lg font-medium mb-2">Quick Setup</h3>
             <p className="text-sm text-muted-foreground">
@@ -98,8 +92,6 @@ const TestimonialSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default TestimonialSection;

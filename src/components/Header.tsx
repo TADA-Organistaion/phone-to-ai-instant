@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import Image from "@/components/Image";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -22,15 +23,21 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-6 md:px-8",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3 px-6 md:px-8",
         scrolled ? "glass-morphism" : "bg-transparent"
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="font-semibold text-lg sm:text-xl">
-          <a href="#" className="text-foreground hover:text-brand transition-colors">
-            SmartChat AI
-          </a>
+        <div className="flex items-center">
+          <Link to="/" className="transition-opacity hover:opacity-90">
+            <Image 
+              src="/lovable-uploads/fb102b40-0ca2-4952-b206-dd3b7d3ed16a.png" 
+              alt="SmartChat AI - Phone to AI in seconds" 
+              className="h-12 md:h-14" 
+              width={220}
+              height={60}
+            />
+          </Link>
         </div>
 
         <nav className="hidden md:flex items-center space-x-4">

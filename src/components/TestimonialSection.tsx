@@ -83,7 +83,7 @@ const TestimonialSection = () => {
           
           <div className="flex flex-col items-center text-center p-6">
             <div className="h-12 w-12 rounded-full bg-brand/10 flex items-center justify-center mb-4">
-              <span className="text-brand font-bold">5 min</span>
+              <span className="text-brand font-bold">5min</span>
             </div>
             <h3 className="text-lg font-medium mb-2">Quick Setup</h3>
             <p className="text-sm text-muted-foreground">

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import BusinessDashboardLayout from "@/components/business/BusinessDashboardLayout";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ type Message = {
 const MessagesPage = () => {
   const [aiMode, setAiMode] = useState(true);
   const [currentFilter, setCurrentFilter] = useState<VipTier>("all");
+  const [showAllCategories, setShowAllCategories] = useState(false);
   
   // Sample messages data
   const messages: Message[] = [
@@ -209,8 +209,17 @@ const MessagesPage = () => {
             </div>
             
             <div className="bg-secondary/20 p-4 rounded-lg space-y-4">
-              <h3 className="font-medium">VIP Customer Priority</h3>
-              
+              <div className="flex justify-between items-center">
+                <h3 className="font-medium">VIP Customer Priority</h3>
+                <Button 
+                  variant="secondary" 
+                  size="sm"
+                  onClick={() => setShowAllCategories(!showAllCategories)}
+                >
+                  {showAllCategories ? "Hide Categories" : "See All Categories"}
+                </Button>
+              </div>
+
               <div className="space-y-3">
                 {(["platinum", "gold", "silver", "bronze"] as const).map((tier) => (
                   <div key={tier} className="flex items-center justify-between">
@@ -227,6 +236,26 @@ const MessagesPage = () => {
                   </div>
                 ))}
               </div>
+              
+              {showAllCategories && (
+                <div className="mt-4 border-t pt-4">
+                  <h4 className="font-medium mb-3 text-sm">Additional Analytics</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Total Purchases:</span>
+                      <span className="font-medium">1,245</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Average Purchase:</span>
+                      <span className="font-medium">$78.32</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Total Orders:</span>
+                      <span className="font-medium">892</span>
+                    </div>
+                  </div>
+                </div>
+              )}
               
               <p className="text-xs text-muted-foreground">
                 Response priority based on customer loyalty tier

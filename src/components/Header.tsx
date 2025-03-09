@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -48,15 +47,22 @@ const Header = () => {
             Demo
           </a>
           <Link to="/auth">
-            <Button variant="outline" size="sm" className="hover:text-brand transition-colors">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="hover:text-brand transition-colors min-w-[80px]"
+            >
               Sign in
             </Button>
           </Link>
-          <a href="#cta">
-            <Button size="sm" className="bg-brand text-white hover:bg-brand-dark hover-scale">
+          <Link to="/auth/signup">
+            <Button 
+              size="sm" 
+              className="bg-brand text-white hover:bg-brand-dark hover-scale min-w-[80px]"
+            >
               Sign up
             </Button>
-          </a>
+          </Link>
         </nav>
 
         <div className="md:hidden">

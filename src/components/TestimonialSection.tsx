@@ -6,10 +6,7 @@ const TestimonialSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             How It Works
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Behind this instant demo, our system auto-generates a menu, calculates totals, 
-            processes payments, and notifies staff.
-          </p>
+          <p className="text-muted-foreground max-w-2xl mx-auto">Say goodbye to missed calls and manual order-taking. Let our multi-agent AI handle general questions, order taking, etc.</p>
         </div>
         
         <div className="grid md:grid-cols-2 gap-8 mb-16">

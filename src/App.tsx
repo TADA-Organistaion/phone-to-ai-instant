@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +14,7 @@ import BusinessPage from "./pages/dashboard/BusinessPage";
 import MessagesPage from "./pages/dashboard/MessagesPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
 import CustomersPage from "./pages/dashboard/CustomersPage";
+import BusinessSignupPage from "./components/business/BusinessSignupPage";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,7 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/auth/signup" element={<SignUpPage />} />
+            <Route path="/business-signup" element={<BusinessSignupPage />} />
             <Route path="/business-profile" element={<BusinessProfilePage />} />
             <Route path="/business-settings" element={<BusinessSettingsPage />} />
             

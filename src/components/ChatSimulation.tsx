@@ -241,13 +241,15 @@ const suggestedPrompts = [
     title: "Common Customer Inquiries",
     prompt: "Type 2–3 frequent phone questions (e.g., 'Can I book a party of 12?'). Insert them, and the AI will demonstrate phone-call replacement with your specifics.",
     demoConversation: [
-      { message: "Do you have outdoor seating for 8 people?", isAi: false, role: "customer" },
-      { message: "Yes, our patio can seat up to 10 comfortably. We do recommend calling or chatting ahead if you plan to come during peak dinner hours.", isAi: true, role: "assistant" },
-      { message: "Also, can I preorder for pickup at 2 PM?", isAi: false, role: "customer" },
-      { message: "Absolutely! Just let us know your order by 1:30 PM, and we'll have it ready by 2 PM. That way, no waiting when you arrive.", isAi: true, role: "assistant" },
-      { message: "That's super convenient. Thanks!", isAi: false, role: "customer" },
+      { message: "Hi, I'm looking to book a private room for 12 people next Friday. Is that possible?", isAi: false, role: "customer" },
+      { message: "Yes, our private room seats up to 20, so 12 is no problem. For groups of 10 or more, there's a $50 deposit to secure the space. Does that sound okay?", isAi: true, role: "assistant" },
+      { message: "Sure. Also, do you do catering for larger events? I might need food for a 30-person gathering next month.", isAi: false, role: "customer" },
+      { message: "We do! We cater off-site events for 25+ guests, and we ask for a 48-hour heads-up to prepare everything. We also require a $100 deposit. Is your event date confirmed yet?", isAi: true, role: "assistant" },
+      { message: "It's on the 15th. That's more than 48 hours away, so we should be good, right?", isAi: false, role: "customer" },
+      { message: "Absolutely. If you can finalize your menu about 2 days before, we'll handle the rest. Anything else I can help with?", isAi: true, role: "assistant" },
+      { message: "That's all, thanks!", isAi: false, role: "customer" },
     ],
-    defaultInput: "1) 'Do you have outdoor seating for a group of 8?'\n2) 'Can I preorder for pickup at 2 PM?'"
+    defaultInput: "1) We have a private room for up to 20 people, $50 deposit for parties of 10+.\n2) We cater off-site events for 25 or more guests, requiring a 48-hour notice and a $100 deposit."
   },
   {
     id: "payments-checkout",
@@ -264,7 +266,7 @@ const suggestedPrompts = [
       { message: "Awesome, I'll come by soon.", isAi: false, role: "customer" },
       { message: "Perfect. We'll let you know when it's ready for pickup!", isAi: true, role: "assistant" },
     ],
-    defaultInput: "We accept credit, debit, Apple Pay, or cash on pickup. No extra fees unless it's international. Let's do a scenario with 2 turkey burgers, 1 salad, etc."
+    defaultInput: "We accept credit, debit, Apple Pay, or cash on pickup. No extra fees unless it's international. Turkey burger $6.50, garden salad $4.00."
   }
 ];
 
@@ -296,21 +298,6 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     { message: "Great! I've added 2 cheeseburgers ($10) and 1 fries ($4) to your order. Your total is $14. Would you like to proceed to payment?", isAi: true },
     { message: "Yes, please!", isAi: false },
     { message: "Payment confirmed. Thank you! Your order #137 will be ready in 10 minutes. You'll receive a text notification when it's ready for pickup.", isAi: true },
-  ];
-
-  const helperPromptConversation: Conversation = [
-    { message: "I run a small coffee shop that gets constant calls about hours, location, and whether we offer free Wi-Fi. Show me how SmartChat can handle these questions automatically!", isAi: false },
-    { message: "I'd be happy to help with your coffee shop inquiries. I'm loading your knowledge base now with information about hours, location, Wi-Fi policy, and pet policy...", isAi: true },
-    { message: "Hey, what time do you open on weekdays?", isAi: false },
-    { message: "We open at 7:00 AM on weekdays and close at 7:00 PM. On weekends, our hours are 8:00 AM to 5:00 PM.", isAi: true },
-    { message: "Great, where are you located?", isAi: false },
-    { message: "We're at 123 Main Street, near the public library. There's free parking across the street!", isAi: true },
-    { message: "Do you have free Wi-Fi?", isAi: false },
-    { message: "Yes, we offer free Wi-Fi—ask for the password at the counter. Anything else I can help with?", isAi: true },
-    { message: "Are you dog-friendly?", isAi: false },
-    { message: "We do allow dogs on our outdoor patio, but not indoors, unless they're service animals.", isAi: true },
-    { message: "Thanks, that's everything!", isAi: false },
-    { message: "Happy to help! Have a great day.", isAi: true },
   ];
 
   const customMenuConversation = (menu: ChatSimulationProps["customMenu"]): Conversation => {
@@ -347,35 +334,54 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     let userInput = inputValue.trim() || initialPrompt || "I run a small burger shack";
     
     if (selectedPrompt) {
-      setConversation([{ message: userInput, isAi: false, role: "user" }]);
+      // For suggested prompts, we show the owner's input as context (not visible in the chat)
+      // but start the visible conversation with the first customer message from the demo
+      setConversation([]);
       setInputValue("");
 
       setTimeout(() => {
         setIsLoading(false);
         
-        setConversation([{ message: userInput, isAi: false, role: "user" }]);
-        
-        let currentDelay = 800;
-        for (let i = 0; i < selectedPrompt.demoConversation.length; i++) {
-          const message = selectedPrompt.demoConversation[i];
-          const delay = message.isAi ? 1500 : 800;
+        // Start with the first customer message from the demo
+        if (selectedPrompt.demoConversation.length > 0) {
+          const firstMessage = selectedPrompt.demoConversation[0];
+          if (firstMessage && typeof firstMessage.role === 'string' && 
+              ["system", "user", "assistant", "customer", "demo"].includes(firstMessage.role)) {
+            setConversation([firstMessage as {
+              message: string;
+              isAi: boolean;
+              role?: "system" | "user" | "assistant" | "customer" | "demo";
+            }]);
+          } else {
+            setConversation([{
+              message: firstMessage.message,
+              isAi: firstMessage.isAi
+            }]);
+          }
           
-          setTimeout(() => {
-            if (message.role && ["system", "user", "assistant", "customer", "demo"].includes(message.role)) {
-              setConversation(prev => [...prev, message as {
-                message: string;
-                isAi: boolean;
-                role?: "system" | "user" | "assistant" | "customer" | "demo";
-              }]);
-            } else {
-              setConversation(prev => [...prev, {
-                message: message.message,
-                isAi: message.isAi
-              }]);
-            }
-          }, currentDelay);
-          
-          currentDelay += delay;
+          // Add the rest of the conversation with delays
+          let currentDelay = 800;
+          for (let i = 1; i < selectedPrompt.demoConversation.length; i++) {
+            const message = selectedPrompt.demoConversation[i];
+            const delay = message.isAi ? 1500 : 800;
+            
+            setTimeout(() => {
+              if (message.role && ["system", "user", "assistant", "customer", "demo"].includes(message.role)) {
+                setConversation(prev => [...prev, message as {
+                  message: string;
+                  isAi: boolean;
+                  role?: "system" | "user" | "assistant" | "customer" | "demo";
+                }]);
+              } else {
+                setConversation(prev => [...prev, {
+                  message: message.message,
+                  isAi: message.isAi
+                }]);
+              }
+            }, currentDelay);
+            
+            currentDelay += delay;
+          }
         }
       }, 1500);
       

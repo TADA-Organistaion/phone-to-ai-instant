@@ -9,7 +9,7 @@ const Hero = () => {
             Phone to AI <span className="text-brand">in seconds</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">See how businesses like yours are replacing busywork and phone chaos with 24/7 AI ordering and support.</p>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">Describe your business details—menu, hours, policies—and see how our AI instantly handles customer questions. No more missed calls or taking orders by phone!</p>
         </div>
         
         <div className="animate-slide-in">

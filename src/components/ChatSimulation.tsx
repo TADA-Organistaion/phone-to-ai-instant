@@ -388,7 +388,20 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
           const delay = message.isAi ? 1500 : 800;
           
           setTimeout(() => {
-            setConversation(prev => [...prev, message]);
+            // Ensure we're using the correct type for message.role
+            if (message.role && ["system", "user", "assistant", "customer", "demo"].includes(message.role)) {
+              setConversation(prev => [...prev, message as {
+                message: string;
+                isAi: boolean;
+                role?: "system" | "user" | "assistant" | "customer" | "demo";
+              }]);
+            } else {
+              // If role isn't one of the allowed values, omit it
+              setConversation(prev => [...prev, {
+                message: message.message,
+                isAi: message.isAi
+              }]);
+            }
           }, currentDelay);
           
           currentDelay += delay;
@@ -923,3 +936,4 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
 };
 
 export default ChatSimulation;
+

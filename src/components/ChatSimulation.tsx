@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import ChatBubble from "./ChatBubble";
@@ -244,7 +243,7 @@ const suggestedPrompts = [
       { message: "Hi, I'm looking to book a private room for 12 people next Friday. Is that possible?", isAi: false, role: "customer" },
       { message: "Yes, our private room seats up to 20, so 12 is no problem. For groups of 10 or more, there's a $50 deposit to secure the space. Does that sound okay?", isAi: true, role: "assistant" },
       { message: "Sure. Also, do you do catering for larger events? I might need food for a 30-person gathering next month.", isAi: false, role: "customer" },
-      { message: "We do! We cater off-site events for 25+ guests, and we ask for a 48-hour heads-up to prepare everything. We also require a $100 deposit. Is your event date confirmed yet?", isAi: true, role: "assistant" },
+      { message: "We do! We cater off-site events for 25+ guests, and we ask for a 48-hour notice to prepare everything. We also require a $100 deposit. Is your event date confirmed yet?", isAi: true, role: "assistant" },
       { message: "It's on the 15th. That's more than 48 hours away, so we should be good, right?", isAi: false, role: "customer" },
       { message: "Absolutely. If you can finalize your menu about 2 days before, we'll handle the rest. Anything else I can help with?", isAi: true, role: "assistant" },
       { message: "That's all, thanks!", isAi: false, role: "customer" },
@@ -406,18 +405,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
         const delay = message.isAi ? 1500 : 800;
         
         setTimeout(() => {
-          if (message.role && ["system", "user", "assistant", "customer", "demo"].includes(message.role)) {
-            setConversation(prev => [...prev, message as {
-              message: string;
-              isAi: boolean;
-              role?: "system" | "user" | "assistant" | "customer" | "demo";
-            }]);
-          } else {
-            setConversation(prev => [...prev, {
-              message: message.message,
-              isAi: message.isAi
-            }]);
-          }
+          setConversation(prev => [...prev, message]);
         }, currentDelay);
         
         currentDelay += delay;
@@ -622,10 +610,6 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                 
                 {conversation.length === 0 && showPlaceholder ? (
                   <div className="text-center max-w-md animate-fade-in space-y-4">
-                    <div className="text-muted-foreground text-sm mb-2">
-                      Enter a message about your business—or use a Suggested Prompt.
-                    </div>
-                    <div className="text-xs text-muted-foreground/70">Example: "I run a small burger shack..."</div>
                   </div>
                 ) : (
                   <>
@@ -676,9 +660,8 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                       }}
                       placeholder={selectedPrompt 
                         ? "Describe your specific details here..."
-                        : "Enter a message about your business—or use a Suggested Prompt"
-                      }
-                      className="flex-1 py-3 px-4 rounded-lg min-h-[100px] max-h-[200px] overflow-y-auto resize-none pr-14"
+                        : "Enter a message about your business—or use a Suggested Prompt.\nExample: \"I run a small burger shack...\""}
+                      className="flex-1 py-3 px-4 rounded-lg min-h-[140px] max-h-[240px] overflow-y-auto resize-none pr-14"
                       disabled={isLoading}
                     />
                     <Button

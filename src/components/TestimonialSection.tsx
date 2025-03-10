@@ -17,10 +17,7 @@ const TestimonialSection = () => {
               </div>
               <h3 className="text-xl font-semibold">Multi-Agent System</h3>
             </div>
-            <p className="text-muted-foreground">
-              Our technology uses specialized AI agents working together: SmartChat handles the conversation, 
-              while SmartPOS, Menu Agent, and Ordering Agent manage the business logic.
-            </p>
+            <p className="text-muted-foreground">Our technology uses specialized AI agents working together: Vibechat handles the conversation, while Vibe Ordering, Menu Agent, and Ordering Agent manage the business logic.</p>
           </div>
           
           <div className="bg-background rounded-xl p-6 shadow-sm hover-scale">

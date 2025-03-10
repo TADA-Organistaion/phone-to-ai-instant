@@ -48,7 +48,7 @@ const Index = () => {
       <footer className="bg-secondary py-8 px-6 text-center text-sm text-muted-foreground">
         <div className="max-w-5xl mx-auto">
           <p>
-            &copy; {new Date().getFullYear()} SmartChat AI. All rights reserved.
+            &copy; {new Date().getFullYear()} Vibechat AI. All rights reserved.
           </p>
         </div>
       </footer>

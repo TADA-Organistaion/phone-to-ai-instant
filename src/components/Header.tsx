@@ -31,11 +31,11 @@ const Header = () => {
         <div className="flex items-center">
           <Link to="/" className="transition-opacity hover:opacity-90">
             <Image 
-              src="/lovable-uploads/1472510f-dad4-4181-824f-f53d6c3a13ec.png" 
-              alt="SmartChat AI - Phone to AI in seconds" 
-              className="h-7 md:h-9" 
-              width={170}
-              height={36}
+              src="/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png" 
+              alt="Vibechat AI - Phone to AI in seconds" 
+              className="h-12 md:h-14" 
+              width={200}
+              height={50}
             />
           </Link>
         </div>

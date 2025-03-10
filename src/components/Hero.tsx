@@ -1,3 +1,4 @@
+
 import ChatSimulation from "./ChatSimulation";
 const Hero = () => {
   return <section className="relative pt-32 pb-20 px-6 overflow-hidden">

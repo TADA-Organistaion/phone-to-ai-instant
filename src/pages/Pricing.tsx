@@ -50,7 +50,7 @@ const PricingPage: React.FC = () => {
         "All Free features",
         "Fully Automated AI Conversations",
         "Unlimited Catalog Items",
-        "Remove SmartChat AI Branding",
+        "Remove Vibechat AI Branding",
         "Cancel anytime"
       ],
       cta: "Select Plan",

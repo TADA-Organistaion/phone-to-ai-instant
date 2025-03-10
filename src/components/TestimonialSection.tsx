@@ -1,6 +1,4 @@
-
 import { cn } from "@/lib/utils";
-
 const TestimonialSection = () => {
   return <section id="how-it-works" className="py-20 px-6">
       <div className="max-w-5xl mx-auto">
@@ -42,15 +40,19 @@ const TestimonialSection = () => {
         <div className={cn("bg-background rounded-xl p-8 shadow-sm glass-morphism mb-16", "border-l-4 border-l-brand")}>
           <div className="flex flex-col md:flex-row md:items-center">
             <div className="flex-1 mb-6 md:mb-0">
-              <h3 className="text-xl font-semibold mb-2">Phone to AI Transformation</h3>
+              <h3 className="text-xl font-semibold mb-2">Just like email replaced snail mail, AI will soon replace phone calls for routine tasks—like taking orders or answering general questions—freeing staff to focus on in-person interactions.</h3>
               <p className="text-muted-foreground">
-                "Just like email replaced snail mail, we believe phone calls at MEs will soon yield to faster, more efficient AI automation. By handing off routine ordering and Q&A to AI, your staff can focus on what humans do best—personal, in-person interactions."
+                "We cut phone calls by 50% within a week. Our staff can now focus on in-person customers 
+                instead of being tied to the phone. It's a game changer for our small business!"
+              </p>
+              <p className="mt-3 text-sm font-medium">
+                - Sarah, Owner at Tiny Café
               </p>
             </div>
             
             <div className="md:ml-8 flex flex-col items-center">
-              <div className="text-5xl font-bold text-brand">80%</div>
-              <div className="text-sm text-muted-foreground text-center">Reduction in<br />phone calls</div>
+              <div className="text-4xl font-bold text-brand">50%</div>
+              <div className="text-sm text-muted-foreground text-center">Reduction in<br />phone orders</div>
             </div>
           </div>
         </div>
@@ -89,5 +91,4 @@ const TestimonialSection = () => {
       </div>
     </section>;
 };
-
 export default TestimonialSection;

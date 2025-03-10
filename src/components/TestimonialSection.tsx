@@ -1,6 +1,4 @@
-
 import { cn } from "@/lib/utils";
-
 const TestimonialSection = () => {
   return <section id="how-it-works" className="py-20 px-6">
       <div className="max-w-5xl mx-auto">
@@ -43,9 +41,7 @@ const TestimonialSection = () => {
           <div className="flex flex-col md:flex-row md:items-center">
             <div className="flex-1 mb-6 md:mb-0">
               <h3 className="text-xl font-semibold mb-2">Phone to AI Transformation</h3>
-              <p className="text-muted-foreground">
-                "Just like email replaced snail mail, we believe phone calls at MEs will soon yield to faster, more efficient AI automation. By handing off routine ordering and Q&A to AI, your staff can focus on what humans do best—personal, in-person interactions."
-              </p>
+              <p className="text-muted-foreground">Just like email replaced snail mail, AI will soon replace phone calls for routine tasks—like taking orders or answering general questions—freeing staff to focus on in-person interactions.</p>
             </div>
             
             <div className="md:ml-8 flex flex-col items-center">
@@ -89,5 +85,4 @@ const TestimonialSection = () => {
       </div>
     </section>;
 };
-
 export default TestimonialSection;

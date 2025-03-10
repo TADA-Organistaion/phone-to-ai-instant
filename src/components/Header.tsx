@@ -53,6 +53,12 @@ const Header = () => {
           >
             Demo
           </a>
+          <Link 
+            to="/pricing" 
+            className="text-sm text-foreground/80 hover:text-brand transition-colors"
+          >
+            Pricing
+          </Link>
           <Link to="/auth">
             <Button 
               variant="outline" 

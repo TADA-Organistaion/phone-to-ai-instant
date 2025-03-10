@@ -47,12 +47,6 @@ const Header = () => {
           >
             How it works
           </a>
-          <a 
-            href="#demo" 
-            className="text-sm text-foreground/80 hover:text-brand transition-colors"
-          >
-            Demo
-          </a>
           <Link 
             to="/pricing" 
             className="text-sm text-foreground/80 hover:text-brand transition-colors"

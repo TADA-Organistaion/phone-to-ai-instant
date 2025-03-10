@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Users, MessageSquare, BarChart, Grid } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "@/components/Image";
 
 interface BusinessDashboardLayoutProps {
   children: React.ReactNode;
@@ -46,7 +47,13 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
       <header className="bg-background border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="font-semibold text-lg">
-            Phone to AI
+            <Image 
+              src="/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png" 
+              alt="Vibechat AI" 
+              className="h-8 md:h-10" 
+              width={120}
+              height={32}
+            />
           </Link>
         </div>
       </header>

@@ -46,7 +46,7 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
     <div className="flex flex-col min-h-screen">
       <header className="bg-background border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="font-semibold text-lg">
+          <Link to="/" className="font-semibold text-lg pl-1">
             <Image 
               src="/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png" 
               alt="Vibechat AI" 

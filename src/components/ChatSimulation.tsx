@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RotateCcw, Send, PanelLeftClose, PanelLeftOpen, PlusCircle } from "lucide-react";
+import { RotateCcw, Send, PanelLeftClose, PanelLeftOpen, PlusCircle, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 type Conversation = {
   message: string;
@@ -288,6 +288,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     },
   });
   const [showSidebar, setShowSidebar] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<typeof suggestedPrompts[0] | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -416,6 +417,10 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   const handlePromptSelect = (prompt: typeof suggestedPrompts[0]) => {
     setSelectedPrompt(prompt);
     setInputValue(prompt.defaultInput);
+    
+    if (window.innerWidth < 768) {
+      setSidebarCollapsed(true);
+    }
   };
 
   const handleAddItem = () => {
@@ -521,6 +526,10 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     );
   };
 
+  const toggleSidebarCollapse = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto rounded-xl overflow-hidden glass-morphism shadow-lg">
       <div className="bg-background p-3 border-b">
@@ -569,27 +578,62 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
         </div>
         
         <TabsContent value="chat" className="p-0">
-          <div className="flex h-[550px]">
+          <div className="flex h-[550px] relative">
             {showSidebar && (
-              <div className="w-80 border-r bg-secondary/5 overflow-auto p-4">
-                <h3 className="font-medium text-sm mb-3">Suggested Prompts</h3>
-                <div className="space-y-2">
-                  {suggestedPrompts.map((prompt) => (
-                    <div 
-                      key={prompt.id} 
-                      className={cn(
-                        "p-3 rounded-lg border cursor-pointer transition-colors",
-                        selectedPrompt?.id === prompt.id 
-                          ? "bg-secondary/20 border-primary/30" 
-                          : "hover:bg-secondary/10"
-                      )}
-                      onClick={() => handlePromptSelect(prompt)}
+              <div 
+                className={cn(
+                  "border-r bg-secondary/5 overflow-auto transition-all duration-300",
+                  sidebarCollapsed 
+                    ? "w-10 min-w-10 flex flex-col items-center" 
+                    : "w-80 p-4"
+                )}
+              >
+                {sidebarCollapsed ? (
+                  <div className="flex flex-col items-center w-full">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={toggleSidebarCollapse}
+                      className="p-1 h-auto w-full rounded-none"
                     >
-                      <h4 className="font-medium text-sm">{prompt.title}</h4>
-                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{prompt.prompt}</p>
+                      <ChevronsRight className="h-4 w-4" />
+                    </Button>
+                    <div className="rotate-90 text-xs text-muted-foreground whitespace-nowrap mt-4">
+                      Suggested Prompts
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex justify-between items-center mb-3">
+                      <h3 className="font-medium text-sm">Suggested Prompts</h3>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={toggleSidebarCollapse}
+                        className="p-1 h-6 w-6"
+                      >
+                        <ChevronsLeft className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      {suggestedPrompts.map((prompt) => (
+                        <div 
+                          key={prompt.id} 
+                          className={cn(
+                            "p-3 rounded-lg border cursor-pointer transition-colors",
+                            selectedPrompt?.id === prompt.id 
+                              ? "bg-secondary/20 border-primary/30" 
+                              : "hover:bg-secondary/10"
+                          )}
+                          onClick={() => handlePromptSelect(prompt)}
+                        >
+                          <h4 className="font-medium text-sm">{prompt.title}</h4>
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{prompt.prompt}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
             

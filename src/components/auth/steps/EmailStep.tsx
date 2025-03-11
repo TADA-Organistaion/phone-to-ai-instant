@@ -16,6 +16,8 @@ type EmailStepProps = {
     firstName: string;
     lastName: string;
   }>>;
+  termsAgreed: boolean;
+  setTermsAgreed: React.Dispatch<React.SetStateAction<boolean>>;
   handleEmailSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
 };
@@ -23,11 +25,11 @@ type EmailStepProps = {
 const EmailStep: React.FC<EmailStepProps> = ({
   userData,
   setUserData,
+  termsAgreed,
+  setTermsAgreed,
   handleEmailSubmit,
   isSubmitting,
 }) => {
-  const [termsAgreed, setTermsAgreed] = React.useState(false);
-
   return (
     <form onSubmit={handleEmailSubmit} className="space-y-4">
       <div className="space-y-2">
@@ -42,6 +44,29 @@ const EmailStep: React.FC<EmailStepProps> = ({
           autoFocus
           className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
         />
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="firstName">First Name (Optional)</Label>
+          <Input
+            id="firstName"
+            placeholder="First Name"
+            value={userData.firstName}
+            onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
+            className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="lastName">Last Name (Optional)</Label>
+          <Input
+            id="lastName"
+            placeholder="Last Name"
+            value={userData.lastName}
+            onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
+            className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
+          />
+        </div>
       </div>
       
       <div className="flex items-start space-x-2 py-2">
@@ -62,7 +87,7 @@ const EmailStep: React.FC<EmailStepProps> = ({
       <Button 
         type="submit" 
         className="w-full bg-[#ED7D31] hover:bg-[#ED7D31]/90 transition-colors duration-300" 
-        disabled={isSubmitting || !termsAgreed}
+        disabled={isSubmitting}
       >
         {isSubmitting ? "Processing..." : "Continue"}
       </Button>

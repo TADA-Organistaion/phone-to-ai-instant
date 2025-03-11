@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/Image";
 import { ThemeToggle } from "./theme/ThemeToggle";
+import { useTheme } from "./theme/ThemeProvider";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +23,10 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrolled]);
 
+  const logoSrc = theme === "dark" 
+    ? "/lovable-uploads/7d7d71ff-3d98-4c50-84b0-8fd4584064bb.png" 
+    : "/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png";
+
   return (
     <header
       className={cn(
@@ -32,7 +38,7 @@ const Header = () => {
         <div className="flex items-center">
           <Link to="/" className="transition-opacity hover:opacity-90">
             <Image 
-              src="/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png" 
+              src={logoSrc} 
               alt="Vibechat AI - Phone to AI in seconds" 
               className="h-12 md:h-14" 
               width={200}

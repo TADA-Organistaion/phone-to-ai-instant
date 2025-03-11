@@ -33,7 +33,7 @@ const ChatBubble = ({ message, isAi, delay = 0, index }: ChatBubbleProps) => {
         className={cn(
           "rounded-2xl px-4 py-3 shadow-sm",
           isAi
-            ? "bg-secondary text-secondary-foreground rounded-tl-sm dark:bg-gray-700 dark:text-gray-200"
+            ? "bg-secondary text-secondary-foreground rounded-tl-sm dark:bg-gray-700 dark:text-gray-100 dark:border dark:border-gray-600"
             : "bg-brand text-white rounded-tr-sm"
         )}
       >

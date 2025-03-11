@@ -13,7 +13,7 @@ const TestimonialSection = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           <div className="bg-background rounded-xl p-6 shadow-sm hover-scale">
             <div className="mb-4 flex items-center">
-              <div className="h-10 w-10 rounded-full bg-brand/10 flex items-center justify-center mr-3">
+              <div className="h-10 w-10 rounded-full bg-brand/20 flex items-center justify-center mr-3 border-2 border-brand/30 dark:bg-brand/30 dark:border-brand/50">
                 <span className="text-brand font-bold">1</span>
               </div>
               <h3 className="text-xl font-semibold">Multi-Agent System</h3>
@@ -23,7 +23,7 @@ const TestimonialSection = () => {
           
           <div className="bg-background rounded-xl p-6 shadow-sm hover-scale">
             <div className="mb-4 flex items-center">
-              <div className="h-10 w-10 rounded-full bg-brand/10 flex items-center justify-center mr-3">
+              <div className="h-10 w-10 rounded-full bg-brand/20 flex items-center justify-center mr-3 border-2 border-brand/30 dark:bg-brand/30 dark:border-brand/50">
                 <span className="text-brand font-bold">2</span>
               </div>
               <h3 className="text-xl font-semibold">End-to-End Automation</h3>
@@ -51,7 +51,7 @@ const TestimonialSection = () => {
         
         <div className="grid md:grid-cols-3 gap-6">
           <div className="flex flex-col items-center text-center p-6">
-            <div className="h-12 w-12 rounded-full bg-brand/10 flex items-center justify-center mb-4">
+            <div className="h-12 w-12 rounded-full bg-brand/20 flex items-center justify-center mb-4 border-2 border-brand/30 dark:bg-brand/30 dark:border-brand/50">
               <span className="text-brand font-bold">24/7</span>
             </div>
             <h3 className="text-lg font-medium mb-2">Always Available</h3>
@@ -61,7 +61,7 @@ const TestimonialSection = () => {
           </div>
           
           <div className="flex flex-col items-center text-center p-6">
-            <div className="h-12 w-12 rounded-full bg-brand/10 flex items-center justify-center mb-4">
+            <div className="h-12 w-12 rounded-full bg-brand/20 flex items-center justify-center mb-4 border-2 border-brand/30 dark:bg-brand/30 dark:border-brand/50">
               <span className="text-brand font-bold">99%</span>
             </div>
             <h3 className="text-lg font-medium mb-2">Order Accuracy</h3>
@@ -71,7 +71,7 @@ const TestimonialSection = () => {
           </div>
           
           <div className="flex flex-col items-center text-center p-6">
-            <div className="h-12 w-12 rounded-full bg-brand/10 flex items-center justify-center mb-4">
+            <div className="h-12 w-12 rounded-full bg-brand/20 flex items-center justify-center mb-4 border-2 border-brand/30 dark:bg-brand/30 dark:border-brand/50">
               <span className="text-brand font-bold">2min</span>
             </div>
             <h3 className="text-lg font-medium mb-2">Quick Setup</h3>

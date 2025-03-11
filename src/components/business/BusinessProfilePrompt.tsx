@@ -121,4 +121,3 @@ const BusinessProfilePrompt: React.FC<BusinessProfilePromptProps> = ({
 };
 
 export default BusinessProfilePrompt;
-

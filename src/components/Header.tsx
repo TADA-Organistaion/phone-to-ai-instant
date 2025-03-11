@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Image from "@/components/Image";
+import { ThemeToggle } from "./theme/ThemeToggle";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -53,11 +54,12 @@ const Header = () => {
           >
             Pricing
           </Link>
+          <ThemeToggle />
           <Link to="/auth">
             <Button 
               variant="outline" 
               size="sm" 
-              className="hover:text-brand transition-colors min-w-[80px]"
+              className="hover:text-brand hover:border-brand transition-colors min-w-[80px]"
             >
               Sign in
             </Button>
@@ -65,14 +67,15 @@ const Header = () => {
           <Link to="/auth/signup">
             <Button 
               size="sm" 
-              className="bg-brand text-white hover:bg-brand-dark hover-scale min-w-[80px]"
+              className="bg-brand text-white hover:bg-brand-dark hover:shadow-md transition-all duration-300 min-w-[80px]"
             >
               Sign up
             </Button>
           </Link>
         </nav>
 
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
           <button className="text-foreground hover:text-brand transition-colors">
             Menu
           </button>

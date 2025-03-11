@@ -4,6 +4,7 @@ import { Users, MessageSquare, BarChart, Grid, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 interface BusinessDashboardLayoutProps {
   children: React.ReactNode;
@@ -52,9 +53,9 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
           
           <Button 
             asChild
-            variant="ghost" 
+            variant="outline" 
             size="sm"
-            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
+            className="flex items-center gap-1 text-sm hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
           >
             <Link to="/">
               <Home className="h-4 w-4" />
@@ -62,9 +63,7 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
             </Link>
           </Button>
           
-          <div className="invisible w-8">
-            {/* Placeholder for layout balance */}
-          </div>
+          <ThemeToggle />
         </div>
       </header>
 
@@ -80,10 +79,10 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
             to={item.path}
             className={cn(
               "flex flex-col items-center justify-center py-1 px-2 w-full",
-              "text-xs transition-colors",
+              "text-xs transition-all",
               currentPath === item.path
                 ? "text-primary"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
             )}
           >
             <item.icon className="h-5 w-5 mb-1" />

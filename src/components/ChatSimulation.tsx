@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import ChatBubble from "./ChatBubble";
@@ -7,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RotateCcw, Send, PanelLeftClose, PanelLeftOpen, PlusCircle, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { RotateCcw, Send, PanelLeftClose, PanelLeftOpen, PlusCircle, ChevronsLeft, ChevronsRight, Pin, MessageCircle } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 type Conversation = {
@@ -270,6 +271,17 @@ const suggestedPrompts = [
   }
 ];
 
+// Sample quick prompt bubbles for customers
+const customerQuickPrompts = [
+  "What time do you close today?",
+  "Do you have any gluten-free options?",
+  "Can I place an order for delivery?",
+  "What are your most popular dishes?",
+  "Do you have any specials today?",
+  "Is there a wait time right now?",
+  "Do you take reservations?"
+];
+
 const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -291,8 +303,10 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<typeof suggestedPrompts[0] | null>(null);
+  const [businessData, setBusinessData] = useState<string>(initialPrompt || "We are a family-owned burger restaurant. We're open Mon-Sat 11am-10pm, Sun 12pm-8pm. We offer delivery within 5 miles for orders over $20. We have gluten-free buns available for $1 extra. Our bestseller is the Classic Cheeseburger ($12).");
   const chatRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const businessDataRef = useRef<HTMLTextAreaElement>(null);
   const isMobile = useIsMobile();
   
   const defaultConversation: Conversation = [
@@ -416,9 +430,46 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     }, 1500);
   };
 
+  const handleQuickPromptClick = (promptText: string) => {
+    setShowPlaceholder(false);
+    setIsLoading(true);
+    
+    // Add the quick prompt as a customer message
+    setConversation(prev => [...prev, { message: promptText, isAi: false }]);
+    
+    // Simulate AI response that references the business data
+    setTimeout(() => {
+      setIsLoading(false);
+      
+      // Generate a response based on the prompt and business data
+      let aiResponse = "";
+      
+      if (promptText.toLowerCase().includes("close") || promptText.toLowerCase().includes("open")) {
+        aiResponse = `Based on our hours, we're open Mon-Sat 11am-10pm and Sun 12pm-8pm. Is there something specific you'd like to know about today's hours?`;
+      } else if (promptText.toLowerCase().includes("gluten")) {
+        aiResponse = `Yes, we do offer gluten-free buns as a substitute for any of our burgers for just $1 extra. Our fries are also gluten-free as they're cooked in a dedicated fryer.`;
+      } else if (promptText.toLowerCase().includes("delivery")) {
+        aiResponse = `Yes, we offer delivery within a 5-mile radius for orders over $20. There's no delivery fee for orders over $35. Would you like to place a delivery order?`;
+      } else if (promptText.toLowerCase().includes("popular") || promptText.toLowerCase().includes("bestseller")) {
+        aiResponse = `Our Classic Cheeseburger ($12) is our bestseller! It comes with a juicy beef patty, cheddar cheese, lettuce, tomato, and our special sauce. Would you like to try one?`;
+      } else if (promptText.toLowerCase().includes("special")) {
+        aiResponse = `Today's special is our Double BBQ Burger with bacon and onion rings for $15.99, which includes a side of fries. Would you like to add this to your order?`;
+      } else if (promptText.toLowerCase().includes("wait")) {
+        aiResponse = `Currently, our wait time is approximately 15-20 minutes for dine-in and 25-30 minutes for takeout orders. Would you like to place an order?`;
+      } else if (promptText.toLowerCase().includes("reservation")) {
+        aiResponse = `Yes, we accept reservations for parties of 6 or more. For smaller groups, we operate on a first-come, first-served basis. Would you like to make a reservation?`;
+      } else {
+        aiResponse = `Thanks for your question. Based on our information, I can help you with menu items, pricing, hours, and delivery options. Is there something specific you'd like to know about our restaurant?`;
+      }
+      
+      setConversation(prev => [...prev, { message: aiResponse, isAi: true }]);
+    }, 1500);
+  };
+
   const handlePromptSelect = (prompt: typeof suggestedPrompts[0]) => {
     setSelectedPrompt(prompt);
     setInputValue(prompt.defaultInput);
+    setBusinessData(prompt.defaultInput);
     
     if (isMobile) {
       setSidebarCollapsed(true);
@@ -471,12 +522,17 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     }, 1500);
   };
 
+  const handleBusinessDataChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setBusinessData(e.target.value);
+  };
+
   const handleMenuTemplateClick = (template: "pizzaParlor" | "burgerShack" | "cafePastries") => {
     setMenuItems(menuTemplates[template]);
   };
 
   useEffect(() => {
     if (initialPrompt) {
+      setBusinessData(initialPrompt);
       handleSubmit();
     }
   }, [initialPrompt, customMenu]);
@@ -669,6 +725,45 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                 </div>
               )}
               
+              {/* Business Data - Pinned section */}
+              <div className="p-3 bg-secondary/10 border-b">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <Pin className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span className="text-xs font-medium">Business Data (Pinned)</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground">This information is used by the AI to respond to customer queries</div>
+                </div>
+                <Textarea
+                  ref={businessDataRef}
+                  value={businessData}
+                  onChange={handleBusinessDataChange}
+                  placeholder="Enter your business details (hours, menu items, policies, etc.)"
+                  className="text-xs resize-none bg-white/50 min-h-[60px] max-h-[100px] overflow-y-auto"
+                />
+              </div>
+              
+              {/* Quick prompt bubbles */}
+              <div className="p-3 border-b overflow-x-auto">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <MessageCircle className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="text-xs font-medium">Common Customer Questions</span>
+                </div>
+                <div className="flex gap-2 pb-1 flex-wrap">
+                  {customerQuickPrompts.map((prompt, index) => (
+                    <Button 
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      className="text-xs whitespace-nowrap"
+                      onClick={() => handleQuickPromptClick(prompt)}
+                    >
+                      {prompt}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              
               <div 
                 ref={chatRef}
                 className={cn(
@@ -685,6 +780,9 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                 
                 {conversation.length === 0 && showPlaceholder ? (
                   <div className="text-center max-w-md animate-fade-in space-y-4">
+                    <p className="text-muted-foreground">
+                      Try clicking one of the common customer questions above, or type your own query below to see how the AI would respond using your business data.
+                    </p>
                   </div>
                 ) : (
                   <>
@@ -733,10 +831,8 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                           handleSubmit();
                         }
                       }}
-                      placeholder={selectedPrompt 
-                        ? "Describe your specific details here..."
-                        : "Enter a message about your business—or use a Suggested Prompt.\nExample: \"I run a small burger shack...\""}
-                      className="flex-1 py-3 px-4 rounded-lg min-h-[140px] max-h-[240px] overflow-y-auto resize-none pr-14"
+                      placeholder="Type a custom customer question..."
+                      className="flex-1 py-3 px-4 rounded-lg min-h-[80px] max-h-[150px] overflow-y-auto resize-none pr-14"
                       disabled={isLoading}
                     />
                     <Button

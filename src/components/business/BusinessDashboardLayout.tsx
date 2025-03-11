@@ -76,7 +76,19 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
-            <item.icon className="h-5 w-5 mb-1" />
+            {currentPath === item.path && item.path === "/dashboard/business" ? (
+              <div className="flex justify-center mb-1">
+                <Image 
+                  src="/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png" 
+                  alt="Vibechat AI" 
+                  className="h-5 pl-2" 
+                  width={80}
+                  height={20}
+                />
+              </div>
+            ) : (
+              <item.icon className="h-5 w-5 mb-1" />
+            )}
             <span>{item.label}</span>
           </Link>
         ))}

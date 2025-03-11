@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RotateCcw, Send, PanelLeftClose, PanelLeftOpen, PlusCircle, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { useMobile } from "@/hooks/use-mobile";
 
 type Conversation = {
   message: string;
@@ -292,7 +293,8 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   const [selectedPrompt, setSelectedPrompt] = useState<typeof suggestedPrompts[0] | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+  const isMobile = useMobile();
+  
   const defaultConversation: Conversation = [
     { message: "I want 2 cheeseburgers and fries.", isAi: false },
     { message: "Great! I've added 2 cheeseburgers ($10) and 1 fries ($4) to your order. Your total is $14. Would you like to proceed to payment?", isAi: true },
@@ -418,7 +420,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
     setSelectedPrompt(prompt);
     setInputValue(prompt.defaultInput);
     
-    if (window.innerWidth < 768) {
+    if (isMobile) {
       setSidebarCollapsed(true);
     }
   };
@@ -484,6 +486,14 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [conversation, activeTab]);
+
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarCollapsed(true);
+    } else {
+      setSidebarCollapsed(false);
+    }
+  }, [isMobile]);
 
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
@@ -578,17 +588,21 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
         </div>
         
         <TabsContent value="chat" className="p-0">
-          <div className="flex h-[550px] relative">
+          <div className="flex flex-col md:flex-row h-[550px] relative">
             {showSidebar && (
               <div 
                 className={cn(
                   "border-r bg-secondary/5 overflow-auto transition-all duration-300",
-                  sidebarCollapsed 
-                    ? "w-10 min-w-10 flex flex-col items-center" 
-                    : "w-80 p-4"
+                  isMobile 
+                    ? sidebarCollapsed 
+                      ? "hidden"
+                      : "w-full h-auto p-4 order-2" 
+                    : sidebarCollapsed 
+                      ? "w-10 min-w-10 flex flex-col items-center" 
+                      : "w-80 p-4"
                 )}
               >
-                {sidebarCollapsed ? (
+                {!isMobile && sidebarCollapsed ? (
                   <div className="flex flex-col items-center w-full">
                     <Button 
                       variant="ghost" 
@@ -605,7 +619,9 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                 ) : (
                   <>
                     <div className="flex justify-between items-center mb-3">
-                      <h3 className="font-medium text-sm">Suggested Prompts</h3>
+                      <h3 className="font-medium text-sm">
+                        {!isMobile && "Suggested Prompts"}
+                      </h3>
                       <Button 
                         variant="ghost" 
                         size="sm" 
@@ -637,7 +653,25 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
               </div>
             )}
             
-            <div className="flex-1 flex flex-col">
+            <div className={cn(
+                "flex-1 flex flex-col",
+                isMobile && "order-1"
+              )}
+            >
+              {isMobile && (
+                <div className="flex justify-center p-2 border-b">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={toggleSidebarCollapse}
+                    className="text-xs w-full flex justify-center items-center gap-1"
+                  >
+                    {sidebarCollapsed ? "Show Prompts" : "Hide Prompts"}
+                    {sidebarCollapsed ? <ChevronsRight className="h-3 w-3" /> : <ChevronsLeft className="h-3 w-3" />}
+                  </Button>
+                </div>
+              )}
+              
               <div 
                 ref={chatRef}
                 className={cn(

@@ -8,6 +8,7 @@ export type BusinessData = {
   state: string;
   zip: string;
   placeId?: string;
+  website?: string; // Adding website URL field
 };
 
 export type UserData = {

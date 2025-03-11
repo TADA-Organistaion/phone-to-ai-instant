@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { SignupStep, BusinessData, UserData } from "./utils/types";
@@ -51,9 +51,11 @@ const SignUpFlow = () => {
     city: '',
     state: '',
     zip: '',
+    website: '',
   });
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showProfilePrompt, setShowProfilePrompt] = useState(false);
   
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -63,6 +65,15 @@ const SignUpFlow = () => {
 
   // For debugging
   console.log("Current step:", currentStep);
+
+  useEffect(() => {
+    // Check if this is a new sign-up (for prompt display logic later)
+    const isNewSignUp = sessionStorage.getItem('isNewSignUp');
+    if (isNewSignUp === 'true') {
+      setShowProfilePrompt(true);
+      sessionStorage.removeItem('isNewSignUp');
+    }
+  }, []);
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,9 +141,13 @@ const SignUpFlow = () => {
           city: '',
           state: '',
           zip: '',
+          website: '',
         };
         
         localStorage.setItem('businessData', JSON.stringify(defaultBusiness));
+        
+        // Set flag for new sign-up (to show profile completion prompt)
+        sessionStorage.setItem('isNewSignUp', 'true');
         
         toast({
           title: "Sign up successful!",

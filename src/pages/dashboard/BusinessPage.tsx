@@ -10,21 +10,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Upload, Plus, Copy, Users, Link, X } from "lucide-react";
 import BusinessDashboardLayout from "@/components/business/BusinessDashboardLayout";
 import BusinessLocationSearch from "@/components/business/BusinessLocationSearch";
+import WebsiteUrlInput from "@/components/business/WebsiteUrlInput";
+import BusinessProfilePrompt from "@/components/business/BusinessProfilePrompt";
 import { useToast } from "@/hooks/use-toast";
+import { BusinessData } from "@/components/auth/utils/types";
 
 type UserInfo = {
   firstName: string;
   lastName: string;
   email: string;
-};
-
-type BusinessData = {
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  placeId?: string;
 };
 
 type TeamMember = {
@@ -56,6 +50,7 @@ const BusinessPage = () => {
     { id: '1', name: 'Jane Smith', email: 'jane@example.com', role: 'Manager' },
     { id: '2', name: 'John Doe', email: 'john@example.com', role: 'Staff' }
   ]);
+  const [isProfileComplete, setIsProfileComplete] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -69,6 +64,12 @@ const BusinessPage = () => {
     const storedBusinessData = localStorage.getItem('businessData');
     if (storedBusinessData) {
       setBusinessData(JSON.parse(storedBusinessData));
+      
+      // Check if profile is complete (has location and website)
+      const parsedData = JSON.parse(storedBusinessData);
+      setIsProfileComplete(
+        !!(parsedData.address && parsedData.website)
+      );
     }
     
     // Simulate some initial images
@@ -95,6 +96,7 @@ const BusinessPage = () => {
     
     // Update business data
     const updatedBusinessData: BusinessData = {
+      ...(businessData || {}),
       name: location.name,
       address: addressParts[0] ? addressParts[0].trim() : '',
       city: addressParts[1] ? addressParts[1].trim() : '',
@@ -107,6 +109,42 @@ const BusinessPage = () => {
     
     // Save to localStorage
     localStorage.setItem('businessData', JSON.stringify(updatedBusinessData));
+    
+    checkProfileCompletion(updatedBusinessData);
+  };
+
+  const handleWebsiteUpdate = (website: string) => {
+    if (!businessData) return;
+    
+    const updatedBusinessData = {
+      ...businessData,
+      website
+    };
+    
+    setBusinessData(updatedBusinessData);
+    localStorage.setItem('businessData', JSON.stringify(updatedBusinessData));
+    
+    checkProfileCompletion(updatedBusinessData);
+  };
+  
+  const checkProfileCompletion = (data: BusinessData) => {
+    // Check if both location and website are set
+    const isComplete = !!(data.address && data.website);
+    setIsProfileComplete(isComplete);
+    
+    if (isComplete) {
+      toast({
+        title: "Profile completed!",
+        description: "Your business profile is now complete. The AI can now learn from your data."
+      });
+    }
+  };
+
+  const scrollToInputs = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   const copyWidgetCode = () => {
@@ -219,11 +257,23 @@ const BusinessPage = () => {
         </div>
         
         <Separator />
+        
+        {/* Business Profile Completion Prompt */}
+        <BusinessProfilePrompt 
+          isComplete={isProfileComplete}
+          onCompleteProfile={scrollToInputs}
+        />
 
-        {/* Location Search Component - New Addition */}
+        {/* Location Search Component */}
         <BusinessLocationSearch 
           onLocationSelect={handleLocationSelect}
           initialBusinessData={businessData}
+        />
+        
+        {/* Website URL Input */}
+        <WebsiteUrlInput 
+          initialWebsite={businessData?.website || ''} 
+          onWebsiteUpdate={handleWebsiteUpdate}
         />
         
         {/* Widget Code Section */}
@@ -266,6 +316,7 @@ const BusinessPage = () => {
             <TabsTrigger value="team" className="py-2.5">Team</TabsTrigger>
           </TabsList>
           
+          {/* All existing tabs and content preserved */}
           <TabsContent value="profile" className="space-y-6 mt-6">
             {/* User Info Section */}
             <Card className="overflow-hidden border border-border/40 shadow-sm transition-all duration-300 hover:shadow-md">

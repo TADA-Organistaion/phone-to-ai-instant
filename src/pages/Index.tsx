@@ -21,7 +21,7 @@ const Index = () => {
             Experience our mobile app's interface on the web with our new dashboard
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/business-signup">
+            <Link to="/auth/signup">
               <Button 
                 size="lg" 
                 className="bg-[#ED7D31] hover:bg-[#ED7D31]/90 transition-colors duration-300 px-6"

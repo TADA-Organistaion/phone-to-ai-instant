@@ -1,9 +1,8 @@
 
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthLayout from "@/components/auth/AuthLayout";
 import SignInForm from "@/components/auth/SignInForm";
-import SignUpForm from "@/components/auth/SignUpForm";
+import SignUpFlow from "@/components/auth/SignUpFlow";
 import { Button } from "@/components/ui/button";
 
 const AuthPage = () => {
@@ -21,16 +20,16 @@ const AuthPage = () => {
 
   return (
     <AuthLayout 
-      title={isSignUp ? "Create Business Account" : "Sign in to your Account"} 
+      title={isSignUp ? "Create Your Account" : "Sign in to your Account"} 
       subtitle={isSignUp ? "Get started with Phone to AI" : "Welcome back to Phone to AI"}
     >
-      {isSignUp ? <SignUpForm /> : <SignInForm />}
+      {isSignUp ? <SignUpFlow /> : <SignInForm />}
       
       <div className="flex justify-center mt-6">
         <Button
           variant="outline"
           onClick={toggleForm}
-          className="w-full max-w-xs"
+          className="w-full max-w-xs border-[#ED7D31]/30 text-[#ED7D31] hover:bg-[#ED7D31]/10 hover:text-[#ED7D31] hover:border-[#ED7D31] transition-colors duration-300"
         >
           {isSignUp ? "Switch to Sign In" : "Switch to Sign Up"}
         </Button>

@@ -9,14 +9,12 @@ import Index from "./pages/Index";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 import AuthPage from "./pages/auth/AuthPage";
-import SignUpPage from "./components/auth/SignUpPage";
 import BusinessProfilePage from "./pages/business/BusinessProfilePage";
 import BusinessSettingsPage from "./pages/business/BusinessSettingsPage";
 import BusinessPage from "./pages/dashboard/BusinessPage";
 import MessagesPage from "./pages/dashboard/MessagesPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
 import CustomersPage from "./pages/dashboard/CustomersPage";
-import BusinessSignupPage from "./components/business/BusinessSignupPage";
 
 const queryClient = new QueryClient();
 
@@ -32,8 +30,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/auth" element={<AuthPage />} />
-              <Route path="/auth/signup" element={<SignUpPage />} />
-              <Route path="/business-signup" element={<BusinessSignupPage />} />
+              <Route path="/auth/signup" element={<AuthPage />} />
               <Route path="/business-profile" element={<BusinessProfilePage />} />
               <Route path="/business-settings" element={<BusinessSettingsPage />} />
               

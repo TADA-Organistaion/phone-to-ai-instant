@@ -120,14 +120,28 @@ const SignUpFlow = () => {
       setIsSubmitting(false);
       
       if (otp === TEST_OTP) { // Test validation
+        // Store data for future use
+        localStorage.setItem('userInfo', JSON.stringify(userData));
+        
+        // Default minimal business data
+        const defaultBusiness = {
+          name: 'My Business',
+          address: '',
+          city: '',
+          state: '',
+          zip: '',
+        };
+        
+        localStorage.setItem('businessData', JSON.stringify(defaultBusiness));
+        
         toast({
-          title: "Email verified",
-          description: "Your email has been successfully verified.",
+          title: "Sign up successful!",
+          description: "Welcome to SmartChat AI",
         });
         
-        // Explicitly set the next step and log it
-        console.log("OTP verified, moving to business step");
-        setCurrentStep('business');
+        // Navigate directly to the dashboard instead of setting next step
+        console.log("OTP verified, navigating to dashboard");
+        navigate('/dashboard/business');
       } else {
         toast({
           title: "Invalid OTP",

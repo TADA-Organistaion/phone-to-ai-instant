@@ -695,9 +695,9 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                     {isLoading && (
                       <div className="self-start bg-secondary text-secondary-foreground rounded-2xl rounded-tl-sm px-4 py-3 animate-pulse max-w-[85%] md:max-w-[70%]">
                         <div className="flex space-x-2">
-                          <div className="h-2 w-2 bg-foreground/30 rounded-full animate-pulse"></div>
-                          <div className="h-2 w-2 bg-foreground/30 rounded-full animate-pulse animate-delay-200"></div>
-                          <div className="h-2 w-2 bg-foreground/30 rounded-full animate-pulse animate-delay-400"></div>
+                          <div className="h-2 w-2 bg-foreground/30 rounded-full animate-bounce"></div>
+                          <div className="h-2 w-2 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                          <div className="h-2 w-2 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
                         </div>
                       </div>
                     )}

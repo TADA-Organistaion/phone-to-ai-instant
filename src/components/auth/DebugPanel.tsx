@@ -9,7 +9,12 @@ type DebugPanelProps = {
 };
 
 const DebugPanel: React.FC<DebugPanelProps> = ({ currentStep, userData, otp }) => {
-  if (process.env.NODE_ENV !== 'development') {
+  // Only show in development mode using window.location instead of process.env
+  const isDevelopment = window.location.hostname === 'localhost' || 
+                        window.location.hostname === '127.0.0.1' ||
+                        window.location.hostname.includes('lovableproject.com');
+                        
+  if (!isDevelopment) {
     return null;
   }
 

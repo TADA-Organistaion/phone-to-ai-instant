@@ -8,9 +8,35 @@ import EmailStep from "./steps/EmailStep";
 import OtpStep from "./steps/OtpStep";
 import BusinessSearchStep from "./steps/BusinessSearchStep";
 import ManualEntryStep from "./steps/ManualEntryStep";
-import GooglePlacesStyles from "./styles/GooglePlacesStyles";
+
+// Define a styled component for Google Places autocomplete
+const GooglePlacesStyles = () => (
+  <style>
+    {`
+    .pac-container {
+      border-radius: 0.5rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    .pac-item {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+    .pac-item:hover {
+      background-color: #f7fafc;
+    }
+    .pac-icon {
+      margin-top: 0.25rem;
+    }
+    .pac-item-query {
+      font-size: 0.875rem;
+    }
+    `}
+  </style>
+);
 
 const SignUpFlow = () => {
+  // State declarations
   const [currentStep, setCurrentStep] = useState<SignupStep>('email');
   const [userData, setUserData] = useState<UserData>({
     email: "",
@@ -98,9 +124,10 @@ const SignUpFlow = () => {
           title: "Email verified",
           description: "Your email has been successfully verified.",
         });
-        // Fix: Explicitly set the next step before proceeding
-        setCurrentStep('business');
+        
+        // Explicitly set the next step and log it
         console.log("OTP verified, moving to business step");
+        setCurrentStep('business');
       } else {
         toast({
           title: "Invalid OTP",
@@ -173,6 +200,7 @@ const SignUpFlow = () => {
   const switchToManualEntry = () => setCurrentStep('manualEntry');
   const goBackToBusinessSearch = () => setCurrentStep('business');
 
+  // Render different steps based on currentStep state
   return (
     <div className="space-y-6">
       <DebugPanel 

@@ -1,32 +1,14 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-
-// Steps in the sign-up flow
-type SignupStep = 'email' | 'otp' | 'business' | 'manualEntry';
-
-// Business data structure
-type BusinessData = {
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  placeId?: string;
-};
-
-// User data structure
-type UserData = {
-  email: string;
-  firstName: string;
-  lastName: string;
-};
+import { SignupStep, BusinessData, UserData } from "./utils/types";
+import DebugPanel from "./DebugPanel";
+import EmailStep from "./steps/EmailStep";
+import OtpStep from "./steps/OtpStep";
+import BusinessSearchStep from "./steps/BusinessSearchStep";
+import ManualEntryStep from "./steps/ManualEntryStep";
+import GooglePlacesStyles from "./styles/GooglePlacesStyles";
 
 const SignUpFlow = () => {
   const [currentStep, setCurrentStep] = useState<SignupStep>('email');
@@ -187,298 +169,59 @@ const SignUpFlow = () => {
     navigate('/dashboard/business');
   };
 
+  const goBackToEmail = () => setCurrentStep('email');
+  const switchToManualEntry = () => setCurrentStep('manualEntry');
+  const goBackToBusinessSearch = () => setCurrentStep('business');
+
   return (
     <div className="space-y-6">
-      {/* Add debugging info for development */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="bg-yellow-100 dark:bg-yellow-900 p-2 text-xs rounded-md mb-2">
-          <p>Current step: {currentStep}</p>
-          <p>Email: {userData.email}</p>
-          <p>OTP entered: {otp}</p>
-        </div>
-      )}
+      <DebugPanel 
+        currentStep={currentStep}
+        userData={userData}
+        otp={otp}
+      />
 
       {currentStep === 'email' && (
-        <form onSubmit={handleEmailSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="your@email.com"
-              value={userData.email}
-              onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-              required
-              autoFocus
-              className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-            />
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="firstName">First Name (Optional)</Label>
-              <Input
-                id="firstName"
-                placeholder="First Name"
-                value={userData.firstName}
-                onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
-                className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastName">Last Name (Optional)</Label>
-              <Input
-                id="lastName"
-                placeholder="Last Name"
-                value={userData.lastName}
-                onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
-                className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-              />
-            </div>
-          </div>
-          
-          <div className="flex items-start space-x-2 py-2">
-            <Checkbox 
-              id="terms" 
-              checked={termsAgreed}
-              onCheckedChange={() => setTermsAgreed(!termsAgreed)}
-            />
-            <label 
-              htmlFor="terms" 
-              className="text-sm text-muted-foreground leading-tight cursor-pointer"
-            >
-              I agree to the <a href="#" className="text-[#ED7D31] hover:underline">Terms of Service</a> and{" "}
-              <a href="#" className="text-[#ED7D31] hover:underline">Privacy Policy</a>
-            </label>
-          </div>
-          
-          <Button 
-            type="submit" 
-            className="w-full bg-[#ED7D31] hover:bg-[#ED7D31]/90 transition-colors duration-300" 
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Processing..." : "Continue"}
-          </Button>
-        </form>
+        <EmailStep 
+          userData={userData}
+          setUserData={setUserData}
+          termsAgreed={termsAgreed}
+          setTermsAgreed={setTermsAgreed}
+          handleEmailSubmit={handleEmailSubmit}
+          isSubmitting={isSubmitting}
+        />
       )}
 
       {currentStep === 'otp' && (
-        <form onSubmit={handleVerifyOtp} className="space-y-4">
-          <div className="text-sm text-muted-foreground mb-4 text-center">
-            We've sent a one-time password to <span className="font-medium text-foreground">{userData.email}</span>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="otp">One-Time Password</Label>
-            <Input
-              id="otp"
-              type="text"
-              placeholder="Enter your OTP (hint: 1111)"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-              autoFocus
-              className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-            />
-          </div>
-          
-          <Button 
-            type="submit" 
-            className="w-full bg-[#ED7D31] hover:bg-[#ED7D31]/90 transition-colors duration-300" 
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Verifying..." : "Verify Email"}
-          </Button>
-          
-          <div className="text-center text-sm mt-4">
-            <Button 
-              variant="link" 
-              className="p-0 text-[#ED7D31]" 
-              onClick={() => setCurrentStep('email')}
-              type="button"
-            >
-              Edit email address
-            </Button>
-          </div>
-        </form>
+        <OtpStep 
+          email={userData.email}
+          otp={otp}
+          setOtp={setOtp}
+          handleVerifyOtp={handleVerifyOtp}
+          isSubmitting={isSubmitting}
+          goBackToEmail={goBackToEmail}
+        />
       )}
 
-      {/* Make sure to actually check for the business step */}
       {currentStep === 'business' && (
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="businessSearch">Search for your business</Label>
-            <div className="google-places-container">
-              <GooglePlacesAutocomplete
-                apiKey={process.env.REACT_APP_GOOGLE_PLACES_API_KEY || ''}
-                selectProps={{
-                  value: selectedPlace,
-                  onChange: handlePlaceSelect,
-                  placeholder: 'Enter business name or address',
-                  isClearable: true,
-                  className: "places-autocomplete",
-                  classNamePrefix: "places-autocomplete",
-                }}
-              />
-            </div>
-          </div>
-          
-          <div className="pt-4">
-            <Button 
-              onClick={handleGooglePlaceSubmit} 
-              className="w-full mb-2 bg-[#ED7D31] hover:bg-[#ED7D31]/90 transition-colors duration-300"
-              disabled={!selectedPlace}
-            >
-              Continue with Selected Business
-            </Button>
-            <Button 
-              variant="outline" 
-              className="w-full border-[#ED7D31]/30 text-[#ED7D31] hover:bg-[#ED7D31]/10 hover:text-[#ED7D31] hover:border-[#ED7D31] transition-colors duration-300"
-              onClick={() => setCurrentStep('manualEntry')}
-            >
-              Add Business Manually
-            </Button>
-          </div>
-        </div>
+        <BusinessSearchStep 
+          selectedPlace={selectedPlace}
+          handlePlaceSelect={handlePlaceSelect}
+          handleGooglePlaceSubmit={handleGooglePlaceSubmit}
+          switchToManualEntry={switchToManualEntry}
+        />
       )}
       
       {currentStep === 'manualEntry' && (
-        <form onSubmit={handleManualEntrySubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="businessName">Business Name</Label>
-            <Input 
-              id="businessName" 
-              placeholder="Enter business name" 
-              value={businessData.name}
-              onChange={(e) => setBusinessData({...businessData, name: e.target.value})}
-              required
-              className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="address">Street Address</Label>
-            <Input 
-              id="address" 
-              placeholder="Enter street address" 
-              value={businessData.address}
-              onChange={(e) => setBusinessData({...businessData, address: e.target.value})}
-              required
-              className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-            />
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="city">City</Label>
-              <Input 
-                id="city" 
-                placeholder="City" 
-                value={businessData.city}
-                onChange={(e) => setBusinessData({...businessData, city: e.target.value})}
-                required
-                className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="state">State</Label>
-              <Input 
-                id="state" 
-                placeholder="State" 
-                value={businessData.state}
-                onChange={(e) => setBusinessData({...businessData, state: e.target.value})}
-                required
-                className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-              />
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="zip">ZIP / Postal Code</Label>
-            <Input 
-              id="zip" 
-              placeholder="ZIP / Postal Code" 
-              value={businessData.zip}
-              onChange={(e) => setBusinessData({...businessData, zip: e.target.value})}
-              required
-              className="transition-all duration-300 focus:border-[#ED7D31] focus:ring-[#ED7D31]/20"
-            />
-          </div>
-          
-          <Button 
-            type="submit" 
-            className="w-full bg-[#ED7D31] hover:bg-[#ED7D31]/90 transition-colors duration-300"
-          >
-            Complete Sign Up
-          </Button>
-          <Button 
-            variant="ghost" 
-            className="w-full"
-            onClick={() => setCurrentStep('business')}
-          >
-            Back
-          </Button>
-        </form>
+        <ManualEntryStep 
+          businessData={businessData}
+          setBusinessData={setBusinessData}
+          handleManualEntrySubmit={handleManualEntrySubmit}
+          goBackToBusinessSearch={goBackToBusinessSearch}
+        />
       )}
 
-      <style>
-        {`
-        /* Custom styling for Google Places Autocomplete */
-        .places-autocomplete__control {
-          border-color: var(--border);
-          border-radius: 0.375rem;
-          min-height: 2.5rem;
-          background-color: var(--background);
-        }
-        .places-autocomplete__control:hover {
-          border-color: var(--border);
-        }
-        .places-autocomplete__control--is-focused {
-          border-color: #ED7D31 !important;
-          box-shadow: 0 0 0 1px rgba(237, 125, 49, 0.2) !important;
-        }
-        .places-autocomplete__menu {
-          background-color: var(--background);
-          border: 1px solid var(--border);
-          border-radius: 0.375rem;
-          z-index: 10;
-        }
-        .places-autocomplete__option {
-          color: var(--foreground);
-        }
-        .places-autocomplete__option--is-focused {
-          background-color: rgba(237, 125, 49, 0.1);
-        }
-        .places-autocomplete__option--is-selected {
-          background-color: #ED7D31;
-          color: white;
-        }
-        .places-autocomplete__input {
-          color: var(--foreground);
-        }
-        .places-autocomplete__placeholder {
-          color: var(--muted-foreground);
-        }
-        .dark .places-autocomplete__menu {
-          background-color: hsl(224 71% 4%);
-          border-color: hsl(215 28% 17%);
-        }
-        .dark .places-autocomplete__option {
-          color: white;
-        }
-        .dark .places-autocomplete__control {
-          background-color: hsl(224 71% 4%);
-          border-color: hsl(215 28% 17%);
-        }
-        .dark .places-autocomplete__input {
-          color: white;
-        }
-        .dark .places-autocomplete__placeholder {
-          color: hsl(215 16% 47%);
-        }
-        `}
-      </style>
+      <GooglePlacesStyles />
     </div>
   );
 };

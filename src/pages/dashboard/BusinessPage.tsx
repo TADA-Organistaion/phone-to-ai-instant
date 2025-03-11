@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Upload, Plus, Copy, Users, Link, X } from "lucide-react";
 import BusinessDashboardLayout from "@/components/business/BusinessDashboardLayout";
+import BusinessLocationSearch from "@/components/business/BusinessLocationSearch";
 import { useToast } from "@/hooks/use-toast";
 
 type UserInfo = {
@@ -86,6 +87,26 @@ const BusinessPage = () => {
       // For Google Places data that might not have individual address components
       return businessData.name;
     }
+  };
+
+  const handleLocationSelect = (location: { id: string; name: string; address: string }) => {
+    // Parse the address into components (this is a simplified example)
+    const addressParts = location.address.split(',');
+    
+    // Update business data
+    const updatedBusinessData: BusinessData = {
+      name: location.name,
+      address: addressParts[0] ? addressParts[0].trim() : '',
+      city: addressParts[1] ? addressParts[1].trim() : '',
+      state: addressParts[2] ? addressParts[2].split(' ')[0].trim() : '',
+      zip: addressParts[2] ? addressParts[2].split(' ')[1]?.trim() : '',
+      placeId: location.id !== 'manual' ? location.id : undefined
+    };
+    
+    setBusinessData(updatedBusinessData);
+    
+    // Save to localStorage
+    localStorage.setItem('businessData', JSON.stringify(updatedBusinessData));
   };
 
   const copyWidgetCode = () => {
@@ -199,6 +220,12 @@ const BusinessPage = () => {
         
         <Separator />
 
+        {/* Location Search Component - New Addition */}
+        <BusinessLocationSearch 
+          onLocationSelect={handleLocationSelect}
+          initialBusinessData={businessData}
+        />
+        
         {/* Widget Code Section */}
         <Card className="overflow-hidden border border-border/40 shadow-sm">
           <CardHeader className="bg-secondary/20">

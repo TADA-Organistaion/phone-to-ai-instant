@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, InfoCircle } from 'lucide-react';
+import { X, Info } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -61,7 +61,7 @@ const BusinessProfilePrompt: React.FC<BusinessProfilePromptProps> = ({
             </p>
             
             <div className="bg-muted/30 p-3 rounded text-sm flex gap-2">
-              <InfoCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <Info className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
               <p>
                 This information helps train our AI to better understand your business 
                 details, menu, hours, and policies so it can accurately assist your customers.
@@ -97,7 +97,7 @@ const BusinessProfilePrompt: React.FC<BusinessProfilePromptProps> = ({
       <Card className="bg-secondary/10 p-3 mb-6 border-l-4 border-l-[#ED7D31]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <InfoCircle className="h-5 w-5 text-[#ED7D31] flex-shrink-0" />
+            <Info className="h-5 w-5 text-[#ED7D31] flex-shrink-0" />
             <p className="text-sm">
               Business details incomplete—add your address and website for full AI benefits.
             </p>
@@ -121,3 +121,4 @@ const BusinessProfilePrompt: React.FC<BusinessProfilePromptProps> = ({
 };
 
 export default BusinessProfilePrompt;
+

@@ -407,7 +407,8 @@ const SignUpFlow = () => {
         </form>
       )}
 
-      <style jsx>{`
+      <style>
+        {`
         /* Custom styling for Google Places Autocomplete */
         .places-autocomplete__control {
           border-color: var(--border);
@@ -461,7 +462,8 @@ const SignUpFlow = () => {
         .dark .places-autocomplete__placeholder {
           color: hsl(215 16% 47%);
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };

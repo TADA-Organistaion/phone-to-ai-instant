@@ -33,7 +33,7 @@ const ChatBubble = ({ message, isAi, delay = 0, index }: ChatBubbleProps) => {
         className={cn(
           "rounded-2xl px-4 py-3 shadow-sm",
           isAi
-            ? "bg-secondary text-secondary-foreground rounded-tl-sm"
+            ? "bg-secondary text-secondary-foreground rounded-tl-sm dark:bg-gray-700 dark:text-gray-200"
             : "bg-brand text-white rounded-tr-sm"
         )}
       >
@@ -42,7 +42,8 @@ const ChatBubble = ({ message, isAi, delay = 0, index }: ChatBubbleProps) => {
       <div
         className={cn(
           "text-xs text-muted-foreground mt-1",
-          isAi ? "text-left ml-2" : "text-right mr-2"
+          isAi ? "text-left ml-2" : "text-right mr-2",
+          "dark:text-gray-400"
         )}
       >
         {isAi ? "AI Agent" : "Customer"}

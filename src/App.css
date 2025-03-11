@@ -95,3 +95,50 @@ textarea,
   border-bottom: 1px solid rgba(237, 125, 49, 0.1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
+
+/* Dark mode specific styles */
+.dark .card {
+  background-color: rgba(30, 30, 35, 0.7);
+  border: 1px solid rgba(80, 80, 95, 0.4);
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: rgba(30, 30, 35, 0.7);
+  border-color: rgba(80, 80, 95, 0.4);
+  color: #C8C8C9;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgba(200, 200, 201, 0.5);
+}
+
+.dark .glass-morphism {
+  backdrop-filter: blur(8px);
+  background-color: rgba(20, 20, 25, 0.8);
+  border-bottom: 1px solid rgba(80, 80, 95, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dark label {
+  color: #C8C8C9;
+}
+
+.dark .border-subtle {
+  border-color: rgba(80, 80, 95, 0.4);
+  border-width: 2px;
+}
+
+.dark .text-label {
+  color: #C8C8C9;
+}
+
+.dark .text-heading {
+  color: #E5E5E6;
+}
+
+.dark .hover-lift:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}

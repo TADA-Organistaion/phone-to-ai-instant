@@ -10,15 +10,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:translate-y-[-1px]",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:translate-y-[-1px] dark:text-primary-foreground dark:hover:text-primary-foreground",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-md hover:translate-y-[-1px]",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:shadow-md hover:translate-y-[-1px] dark:text-destructive-foreground dark:hover:text-destructive-foreground",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent-foreground/50 hover:shadow-sm",
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent-foreground/50 hover:shadow-sm dark:border-gray-600 dark:hover:text-gray-200 dark:hover:border-gray-500",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-sm hover:translate-y-[-1px]",
-        ghost: "hover:bg-accent hover:text-accent-foreground hover:shadow-sm",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-sm hover:translate-y-[-1px] dark:text-gray-200 dark:hover:text-white",
+        ghost: "hover:bg-accent hover:text-accent-foreground hover:shadow-sm dark:hover:bg-gray-700/60 dark:hover:text-gray-200 dark:text-gray-300",
+        link: "text-primary underline-offset-4 hover:underline dark:text-gray-200",
       },
       size: {
         default: "h-10 px-4 py-2",

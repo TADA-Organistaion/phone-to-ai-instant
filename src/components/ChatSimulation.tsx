@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RotateCcw, Send, PanelLeftClose, PanelLeftOpen, PlusCircle, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Conversation = {
   message: string;
@@ -293,7 +293,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
   const [selectedPrompt, setSelectedPrompt] = useState<typeof suggestedPrompts[0] | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   
   const defaultConversation: Conversation = [
     { message: "I want 2 cheeseburgers and fries.", isAi: false },

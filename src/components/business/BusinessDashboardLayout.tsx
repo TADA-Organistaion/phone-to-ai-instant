@@ -1,9 +1,9 @@
 
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Users, MessageSquare, BarChart, Grid, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Image from "@/components/Image";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 interface BusinessDashboardLayoutProps {
   children: React.ReactNode;
@@ -46,23 +46,25 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
     <div className="flex flex-col min-h-screen">
       <header className="bg-background border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="font-semibold text-lg pl-1">
-            <Image 
-              src="/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png" 
-              alt="Vibechat AI" 
-              className="h-8 md:h-10" 
-              width={120}
-              height={32}
-            />
-          </Link>
+          <div className="invisible w-8">
+            {/* Placeholder for layout balance */}
+          </div>
           
-          <Link 
-            to="/" 
+          <Button 
+            asChild
+            variant="ghost" 
+            size="sm"
             className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
           >
-            <Home className="h-4 w-4" />
-            <span>Exit Mobile Mode</span>
-          </Link>
+            <Link to="/">
+              <Home className="h-4 w-4" />
+              <span>Exit Mobile Mode</span>
+            </Link>
+          </Button>
+          
+          <div className="invisible w-8">
+            {/* Placeholder for layout balance */}
+          </div>
         </div>
       </header>
 
@@ -84,19 +86,7 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
-            {currentPath === item.path && item.path === "/dashboard/business" ? (
-              <div className="flex justify-center mb-1">
-                <Image 
-                  src="/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png" 
-                  alt="Vibechat AI" 
-                  className="h-5 pl-2" 
-                  width={80}
-                  height={20}
-                />
-              </div>
-            ) : (
-              <item.icon className="h-5 w-5 mb-1" />
-            )}
+            <item.icon className="h-5 w-5 mb-1" />
             <span>{item.label}</span>
           </Link>
         ))}

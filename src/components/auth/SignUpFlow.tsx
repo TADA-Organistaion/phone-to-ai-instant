@@ -53,6 +53,9 @@ const SignUpFlow = () => {
   // Test OTP value - for demo purposes only
   const TEST_OTP = "1111";
 
+  // For debugging
+  console.log("Current step:", currentStep);
+
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -113,7 +116,9 @@ const SignUpFlow = () => {
           title: "Email verified",
           description: "Your email has been successfully verified.",
         });
+        // Fix: Explicitly set the next step before proceeding
         setCurrentStep('business');
+        console.log("OTP verified, moving to business step");
       } else {
         toast({
           title: "Invalid OTP",
@@ -184,6 +189,15 @@ const SignUpFlow = () => {
 
   return (
     <div className="space-y-6">
+      {/* Add debugging info for development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="bg-yellow-100 dark:bg-yellow-900 p-2 text-xs rounded-md mb-2">
+          <p>Current step: {currentStep}</p>
+          <p>Email: {userData.email}</p>
+          <p>OTP entered: {otp}</p>
+        </div>
+      )}
+
       {currentStep === 'email' && (
         <form onSubmit={handleEmailSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -289,6 +303,7 @@ const SignUpFlow = () => {
         </form>
       )}
 
+      {/* Make sure to actually check for the business step */}
       {currentStep === 'business' && (
         <div className="space-y-4">
           <div className="space-y-2">

@@ -612,9 +612,6 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                     >
                       <ChevronsRight className="h-4 w-4" />
                     </Button>
-                    <div className="rotate-90 text-xs text-muted-foreground whitespace-nowrap mt-4">
-                      Suggested Prompts
-                    </div>
                   </div>
                 ) : (
                   <>

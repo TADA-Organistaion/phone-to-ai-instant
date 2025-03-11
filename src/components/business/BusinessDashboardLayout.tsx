@@ -77,11 +77,11 @@ const BusinessDashboardLayout = ({ children }: BusinessDashboardLayoutProps) => 
             )}
           >
             {currentPath === item.path && item.path === "/dashboard/business" ? (
-              <div className="flex justify-center mb-1">
+              <div className="flex justify-center mb-1 w-full">
                 <Image 
                   src="/lovable-uploads/6cef292d-a698-451e-8442-92d630cdd28b.png" 
                   alt="Vibechat AI" 
-                  className="h-5 pl-2" 
+                  className="h-5 w-auto" 
                   width={80}
                   height={20}
                 />

@@ -298,8 +298,8 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
       dairyFree: false,
     },
   });
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [selectedPrompt, setSelectedPrompt] = useState<typeof suggestedPrompts[0] | null>(null);
   const [businessData, setBusinessData] = useState<string>(initialPrompt || "We are a family-owned burger restaurant. We're open Mon-Sat 11am-10pm, Sun 12pm-8pm. We offer delivery within 5 miles for orders over $20. We have gluten-free buns available for $1 extra. Our bestseller is the Classic Cheeseburger ($12).");
   const chatRef = useRef<HTMLDivElement>(null);

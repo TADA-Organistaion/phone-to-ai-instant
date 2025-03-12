@@ -728,7 +728,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5">
                     <Pin className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span className="text-xs font-medium">Business Data (Pinned)</span>
+                    <span className="text-xs font-medium">Your Business Profile</span>
                   </div>
                   <div className="text-xs text-muted-foreground">This information is used by the AI to respond to customer queries</div>
                 </div>
@@ -736,9 +736,12 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                   ref={businessDataRef}
                   value={businessData}
                   onChange={handleBusinessDataChange}
-                  placeholder="Enter your business details (hours, menu items, policies, etc.)"
+                  placeholder="Add or update your business info (name, hours, menu items, policies, etc.)"
                   className="text-xs resize-none bg-white/50 min-h-[60px] max-h-[100px] overflow-y-auto"
                 />
+                <div className="mt-2 text-xs text-muted-foreground">
+                  Add or edit your business info above to change how the AI responds to customer questions.
+                </div>
               </div>
               
               {/* Quick prompt bubbles */}
@@ -823,7 +826,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                           handleSubmit();
                         }
                       }}
-                      placeholder="Type a question your customers might ask and see how AI can automate your response."
+                      placeholder="Act as a customer—ask a question"
                       className="flex-1 py-3 px-4 rounded-lg min-h-[80px] max-h-[150px] overflow-y-auto resize-none pr-14"
                       disabled={isLoading}
                     />

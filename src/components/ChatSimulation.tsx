@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import ChatBubble from "./ChatBubble";
@@ -642,7 +643,8 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
         </div>
         
         <TabsContent value="chat" className="p-0">
-          <div className="flex flex-col md:flex-row h-[550px] relative">
+          {/* Changed from fixed height to a min-height to allow for dynamic expansion */}
+          <div className="flex flex-col md:flex-row min-h-[550px] relative">
             {showSidebar && (
               <div 
                 className={cn(
@@ -765,11 +767,12 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                 </div>
               </div>
               
+              {/* Modified to have auto height instead of fixed height with internal scrolling */}
               <div 
                 ref={chatRef}
                 className={cn(
-                  "flex flex-col p-4 flex-1 overflow-y-auto",
-                  conversation.length === 0 && "justify-center items-center"
+                  "flex flex-col p-4",
+                  conversation.length === 0 && "justify-center items-center min-h-[300px]"
                 )}
               >
                 {selectedPrompt && conversation.length === 0 && (

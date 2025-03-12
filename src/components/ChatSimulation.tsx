@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import ChatBubble from "./ChatBubble";
@@ -271,7 +270,6 @@ const suggestedPrompts = [
   }
 ];
 
-// Sample quick prompt bubbles for customers
 const customerQuickPrompts = [
   "What time do you close today?",
   "Do you have any gluten-free options?",
@@ -778,13 +776,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                   </div>
                 )}
                 
-                {conversation.length === 0 && showPlaceholder ? (
-                  <div className="text-center max-w-md animate-fade-in space-y-4">
-                    <p className="text-muted-foreground">
-                      Try clicking one of the common customer questions above, or type your own query below to see how the AI would respond using your business data.
-                    </p>
-                  </div>
-                ) : (
+                {conversation.length > 0 || !showPlaceholder ? (
                   <>
                     {conversation.map((message, index) => renderMessage(message, index, index * 500))}
                     {isLoading && (
@@ -797,7 +789,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                       </div>
                     )}
                   </>
-                )}
+                ) : null}
               </div>
               
               <div className="border-t p-4">
@@ -831,7 +823,7 @@ const ChatSimulation = ({ initialPrompt, customMenu }: ChatSimulationProps) => {
                           handleSubmit();
                         }
                       }}
-                      placeholder="Type a custom customer question..."
+                      placeholder="Type a question your customers might ask and see how AI can automate your response."
                       className="flex-1 py-3 px-4 rounded-lg min-h-[80px] max-h-[150px] overflow-y-auto resize-none pr-14"
                       disabled={isLoading}
                     />

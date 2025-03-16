@@ -35,6 +35,7 @@ const Header = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Logo on the left */}
         <div className="flex items-center">
           <Link to="/" className="transition-opacity hover:opacity-90">
             <Image 
@@ -47,7 +48,8 @@ const Header = () => {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-4">
+        {/* Centered navigation */}
+        <nav className="hidden md:flex items-center space-x-6 absolute left-1/2 transform -translate-x-1/2">
           <a 
             href="#how-it-works" 
             className="text-sm text-foreground/80 hover:text-brand transition-colors"
@@ -60,6 +62,10 @@ const Header = () => {
           >
             Pricing
           </Link>
+        </nav>
+
+        {/* Auth buttons and theme toggle on the right */}
+        <div className="hidden md:flex items-center space-x-4">
           <ThemeToggle />
           <Link to="/auth">
             <Button 
@@ -78,8 +84,9 @@ const Header = () => {
               Sign up
             </Button>
           </Link>
-        </nav>
+        </div>
 
+        {/* Mobile menu button */}
         <div className="md:hidden flex items-center gap-2">
           <ThemeToggle />
           <button className="text-foreground hover:text-brand transition-colors">
